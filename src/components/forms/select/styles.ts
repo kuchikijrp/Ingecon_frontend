@@ -35,6 +35,10 @@ export const ContainerSelect = styled.div`
         -webkit-box-shadow: 0 0 0 2.5px rgba(102,175,233,.6);
         box-shadow: 0 0 0 2.5px rgba(102,175,233,.6);
     }
+    select:disabled {
+        background: #dddddd;
+        color: #000;
+    }
     svg{
         color: var(--ingeconBordo);
     }

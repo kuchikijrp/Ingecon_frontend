@@ -8,8 +8,9 @@ import login from './components/Login';
 import menu from './pages/menu';
 
 // Montagem Externa
-import solicitacaoMontagem from './pages/solicitacaoMontagem';
-import solicitacoesMontagem from './pages/solicitacoesMontagem';
+import solicitacaoMontagem from './pages/montagemExterna/novaSolicitacaoMontagem';
+import solicitacoesMontagem from './pages/montagemExterna/solicitacoesMontagem';
+import solicitacaoMontagemAprovacao from './pages/montagemExterna/solicitacoesMontagem/';
 
 
 interface PrivateRouteProps extends RouteProps {
@@ -66,6 +67,7 @@ const Routes: React.FC = () => {
             {/* Montagem Externa */}
             <PrivateRoute exact path="/solicitacaoMontagem" component={solicitacaoMontagem} />
             <PrivateRoute exact path="/solicitacoesMontagem" component={solicitacoesMontagem} />
+            <PrivateRoute exact path="/solicitacaoMontagem/:idMount" component={solicitacaoMontagem} />
 
         </Switch>
     </BrowserRouter>

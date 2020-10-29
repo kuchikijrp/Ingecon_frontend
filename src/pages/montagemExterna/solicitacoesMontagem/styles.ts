@@ -1,34 +1,27 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-    display: flex;
-    flex-direction:row;
-    
-	list-style: none;
 
-    /* background: var(--background); */
 `;
 
+export const NavbarContainer = styled.div`
+    grid-area: NB;
+`;
+
+
 export const Menu = styled.div`
-    height: 100vh;
-    /* height: 100%; */
-    width: 250px;
+    grid-area: SB;
 `;
 
 export const Wrapper = styled.div`
-    width: 100%;
-    min-width: 650px;
-    margin: 0 auto;
+    grid-area: CP;
     padding: 1%;
-    /* background: var(--ingeconPrimary); */
-    /* border: 1px solid var(--ingeconPrimary); */
-    /* border-radius: 8px; */
 `;
 
 export const Content = styled.div`
     /* background: red; */
-    width: 90%;
-    min-width: 650px;
+    width: 92%;
+    /* min-width: 650px; */
 
     margin: 20px auto;
 

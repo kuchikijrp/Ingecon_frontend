@@ -37,7 +37,7 @@ const Input : React.FC<TextAreaProps> = ({
                     <Error>{errors?.message}</Error>
                 </HeaderTextArea>
                 <ContainerTextArea>
-                    <textarea name={name} rows={rows} cols={cols} onChange={setData}/>
+                    <textarea disabled={disabled} value={value} name={name} rows={rows} cols={cols} onChange={setData}/>
                     {errors && <FiAlertCircle size={20} />}
                 </ContainerTextArea>
             </Container>

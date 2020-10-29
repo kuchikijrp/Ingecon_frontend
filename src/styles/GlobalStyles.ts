@@ -7,6 +7,7 @@ export default createGlobalStyle`
         box-sizing: border-box;
         outline: 0px;        
         font-family: Segoe UI,Helvetica Neue,Helvetica,Lucida Grande,Arial,Ubuntu,Cantarell,Fira Sans,sans-serif;
+        /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
     }
     
     html, body, #root{
@@ -20,7 +21,7 @@ export default createGlobalStyle`
         flex-direction: column;
     }
 
-    *, input, button{
+    *, input, button, select, textarea{
         -moz-appearance: none;
         -webkit-appearance: none;
         appearance: none;
@@ -28,6 +29,7 @@ export default createGlobalStyle`
         border: 0;
         background: none;
         outline:0 ;
+        font-family: Segoe UI,Helvetica Neue,Helvetica,Lucida Grande,Arial,Ubuntu,Cantarell,Fira Sans,sans-serif;
     }
 
     :root{

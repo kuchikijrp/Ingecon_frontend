@@ -22,21 +22,23 @@ interface SelectProps {
     register: RefReturn;
     errors: FieldError | undefined;
     data: FieldData[];
+    value?: string;
+    disabled?: boolean;
     setData: any | undefined;
 }
 
 const Select : React.FC<SelectProps> = ({
-    name, title, register, errors, data, setData
+    name, title, register, errors, data, setData, value, disabled
 }) => {
     return (
         <>  
             <Container>
                 <Headerselect>
-                    <Title>{title}:</Title>
+                    {title && <Title>{title}:</Title>}
                     <Error>{errors?.message}</Error>
                 </Headerselect>
                 <ContainerSelect>
-                    <select defaultValue={''} name={name} ref={register} onChange={setData}>
+                    <select disabled={disabled} value={value} defaultValue={''} name={name} ref={register} onChange={setData}>
                         <option value="" disabled hidden>--SELECIONE</option>
 
                         {

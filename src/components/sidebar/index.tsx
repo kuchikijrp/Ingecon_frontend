@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom'
 
 import { Container  } from './styles';
 import Menu from '../../pages/menu';
@@ -10,9 +11,9 @@ const SibeBar: React.FC = () => {
     <Container>
         <ul>
             {/* <li><a href="#">Home</a></li> */}
-            <li><a href="#">Montagem Externa</a>
+            <li><a >Montagem Externa</a>
                 <ul>
-                    <li><a href="/solicitacoesMontagem">Minhas Solicitações</a></li>
+                    <li><NavLink to="/solicitacoesMontagem">Minhas Solicitações</NavLink></li>
                 </ul> 
             </li>
 

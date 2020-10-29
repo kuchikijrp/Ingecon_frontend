@@ -1,32 +1,12 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-    display: flex;
-    flex-direction:row;
-    
-	list-style: none;
-
-    /* background: var(--background); */
-`;
-
 export const Menu = styled.div`
-    height: 100vh;
-    /* height: 100%; */
-    width: 250px;
-
-    @media only screen and (max-width: 850px){
-        height: 100%; 
-    }
+    grid-area: SB;
 `;
 
 export const Wrapper = styled.div`
-    width: 100%;
-    min-width: 650px;
-    margin: 0 auto;
+    grid-area: CP;
     padding: 1%;
-    /* background: var(--ingeconPrimary); */
-    /* border: 1px solid var(--ingeconPrimary); */
-    /* border-radius: 8px; */
 `;
 
 export const Content = styled.div`
@@ -48,6 +28,11 @@ export const Content = styled.div`
         max-width: 200px;
     }
 
+    form .separator{
+        height: 1px;
+        background: var(--primary);
+        margin: 1% 0;
+    }
 
     @media only screen and (max-width: 850px) {
         form .formControl {

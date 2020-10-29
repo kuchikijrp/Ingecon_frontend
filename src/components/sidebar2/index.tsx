@@ -18,54 +18,57 @@ const SibeBar: React.FC = () => {
             const response = await api.get('/montarMenu', 
             {
                 headers: {
-                    "autorization": `Bearer ${token}`
+                    "authorization": `Bearer ${token}`
                 }
             });
 
-            const tree = document.querySelector('nav#tree');
+            const data = response.data;
 
-            const menu = document.createElement('ul');
+    // pega a tag principal que irá receber o menu
+    const tree = document.querySelector('#tree')
 
-            const firstLevel = response.data.filter((item:any) => !item.parent);
+    // recebe toda a arvore de elementos
+    const menu = document.createElement('ul')
 
-            const getFirstLis = firstLevel.map(buildTree);
-            getFirstLis.forEach( (li:any) => menu.append(li));
+    const firstLevel = data.filter(item => !item.parent)
+    const getFirstLis = firstLevel.map(buildTree) // retorno novo array com li's
+    getFirstLis.forEach( li => menu.append(li)) // adicionar li's ao menu
 
-            function buildTree(item){
-                    const li = document.createElement('li');
-                    // const span = document.createElement('span');
-                    // li.append(span);
 
-                    li.innerHTML =  item.name;
-    
-                    const Children = response.data.filter((child:any) => child.parent === item.id);
-                    
-                    if(Children.length > 0){
+    function buildTree(item) {
+        
+        // primeiro elemento
+        const li = document.createElement('li')
+        
+        li.innerHTML = item.name
 
-                        li.addEventListener('click', (event:any) =>{
-                            event.stopPropagation()
-                            event.target.classList.toggle('open');
-                        })
 
-                        li.classList.add('has-children');
-                        // span.addEventListener('click', (event:any) =>{
-                        //     event.stopPropagation()
-                        //     event.target.classList.toggle('open');
-                        // })
+        const children = data.filter(child => child.parent === item.id)
 
-                        // span.classList.add('has-children');
+        if(children.length > 0) {
 
-                        const subMenu = document.createElement('ul');
-                        Children.map(buildTree)
-                            .forEach((li:any) => subMenu.append(li))
-                        li.append(subMenu);
-                    }
-                    
+            //adiciona um click para os parents
+            li.addEventListener('click', (event:any) => {
+                event.stopPropagation()
+                event.target.classList.toggle('open')
+            })
 
-                    return li;
-            }
+            // adiciona uma classe identificadora de que tem filhos
+            li.classList.add('has-children')
 
-            tree?.append(menu)
+            // constroi os filhos
+            const subMenu = document.createElement('ul')
+            children.map(buildTree)
+            .forEach(li => subMenu.append(li))
+            li.append(subMenu)
+        }
+        
+        // adicionar os elements ao menu
+        return li
+    }
+
+    // adiciona o menu no HTML
+    tree?.append(menu)
 
         }
 
