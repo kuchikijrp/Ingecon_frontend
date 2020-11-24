@@ -44,7 +44,7 @@ const Login: React.FC<RouteComponentProps> = ({history}) => {
             
             localStorage.setItem("user", JSON.stringify(response.data.user));
             sessionStorage.setItem('token', response.data.token);
-            history.push('/menu');
+            history.push('/solicitacoesMontagem');
         }
     setLoading(false);
     }

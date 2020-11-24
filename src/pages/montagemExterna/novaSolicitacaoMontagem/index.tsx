@@ -40,7 +40,8 @@ type InputsProps={
 
 const schema = yup.object().shape({
     tipo: yup.string().required('Escolha o tipo de serviço'),
-    numAt: yup.string().required(),
+    numAt: yup.string().when("tipo", {is: 'Assistência Técnica', then: yup.string().required()}),
+    // numAt: yup.string(),
     nomeAbrev: yup.string().required('Informe o nome abreviado da loja'),
     contatoLoja: yup.string().required('Informe o contato da loja'),
     tipoLoja: yup.string().required('Escolha o tipo de loja'),
@@ -53,9 +54,9 @@ const schema = yup.object().shape({
     obs: yup.string(),
 });
 
-const schemaAprovacao = yup.object().shape({
-    aprovacao: yup.string().required('Escolha uma opção')
-  })
+// const schemaAprovacao = yup.object().shape({
+//     aprovacao: yup.string().required('Escolha uma opção')
+//   })
 
 const SolicitacaoMontagem: React.FC  = () => {
     const [idMounts, setIdMounts]= useState('');
@@ -70,7 +71,11 @@ const SolicitacaoMontagem: React.FC  = () => {
     const [idAt, setIdAt] = useState('');
     // const [client, setClient] = useState('');
     const [store, setStore] = useState('');
+    const [address, setAddress] = useState('');
+    const [neighborhood, setNeighborhood] = useState('');
+    const [uf, setUf] = useState('');
     const [contact_store, setContact_store] = useState('');
+    const [contact_phone, setContact_Phone] = useState('');
     const [type_work, setTypeWork] = useState('');
     const [start_work, setStartWork] = useState('');
     const [end_work, setEndWork] = useState('');
@@ -79,6 +84,8 @@ const SolicitacaoMontagem: React.FC  = () => {
     const [time_discharge, setTimeDischarge] = useState('');
     const [time_work, setTimeWork] = useState('');
     const [obs, setObs] = useState('');
+
+    const [branches, setBranches] = useState([]);
 
     const [aprovacao, setAprovacao] = useState('');
     const [obsAprovador, setObsAprovador] = useState('');
@@ -109,6 +116,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setTypeWork(mount.data?.type_work || null);
                 setStore(mount.data?.store || null);
                 setContact_store(mount.data?.contact_store || null);
+                setContact_Phone(mount.data?.contact_phone || null);
                 setStartWork(mount.data?.start_work || null);
                 setEndWork(mount.data?.end_work || null);
                 setTimeDischarge(mount.data?.time_discharge || null);
@@ -117,13 +125,13 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setQtdFitters(mount.data?.qtd_fitters || null);
                 setObs(mount.data?.obs || null);
                 
-                if(mount.data?.status != "Em Analise")
+                if(mount.data?.status !== "Em Analise")
                     setAprovacao(mount.data?.status || null);
 
             }
 
 
-            console.log(mount)
+            // console.log(mount)
         } catch (err) {
             setLoading(false);
             toast.error(err);
@@ -132,11 +140,70 @@ const SolicitacaoMontagem: React.FC  = () => {
         setLoading(false);
         }
 
-          if (idMount != "")
-            getMount()
+        async function getFiliais(){
+            const token = sessionStorage.getItem('token');
+            setLoading(true);
+                try {
+                    const response = await api.get('/clienteFilial',
+                    {
+                        headers:{
+                            authorization: `Bearer ${token}`
+                        }
+                    })
+
+                    if (response.data.error){
+                        toast.error(response.data.error)
+                    }else{
+                        setBranches(response.data.map(filiais => {
+
+                            return {'id':filiais.id_filial, 'name': filiais.nm_desc_filial}
+                        }))
         
+                    }
+                    // console.log(filiais)
+                } catch (error) {
+                    setLoading(false);
+                    toast.error(error);  
+                }
+            setLoading(false)
+
+        }
+
+          if (idMount !== "")
+            getMount()
+
+            getFiliais()
+
       }, [])
 
+      useEffect(() =>{
+        async function getStore(){
+            const token = sessionStorage.getItem('token');
+
+            try {
+
+                const response = await api.get(`/clienteFilial/${store}`,
+                {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }})
+
+                if (response.data.error){
+                    toast.error(response.data.error)
+                }else{
+                    setAddress(response.data?.nm_endereco || null);
+                    setNeighborhood(response.data?.nm_bairro || null);
+                    setUf(response.data?.nm_uf || null)
+                }
+
+                
+            } catch (error) {
+                    
+            }
+        }
+
+        getStore()
+      }, [store])
 
     async function handle_salvarSolicitacao(event: any){
         // event.preventDefault();
@@ -156,6 +223,7 @@ const SolicitacaoMontagem: React.FC  = () => {
             client: 1,
             store: store,
             contact_store: contact_store,
+            contact_phone: contact_phone,
             type_work: type_work,
             start_work: start_work,
             end_work: end_work,
@@ -258,7 +326,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                                 name={'numAt'} 
                                 type={'number'} 
                                 register={register} 
-                                errors={errors.numAt} 
+                                errors={type === 'Montagem Externa' ? errors.tipo : errors.numAt} 
                                 value={idAt}
                                 setData={event => setIdAt(event.target.value)} 
                                 disabled={type === 'Montagem Externa' || idMounts ? true : false}
@@ -276,26 +344,71 @@ const SolicitacaoMontagem: React.FC  = () => {
                             />
                         </div>
 
-                        <Input 
-                            title={'Nome Abrev'} 
-                            name="nomeAbrev" 
-                            type={'text'} 
-                            register={register} 
-                            value={store}
-                            errors={errors.nomeAbrev} 
-                            setData={event => setStore(event.target.value)}
-                            disabled={idMounts ? true : false}
-                        />
-                        <Input 
-                            title={'Contato Loja'} 
-                            name="contatoLoja" 
-                            type={'text'} 
-                            register={register} 
-                            value={contact_store}
-                            errors={errors.contatoLoja} 
-                            setData={event => setContact_store(event.target.value)}
-                            disabled={idMounts ? true : false}
-                        />
+                        <div className="formControl"> 
+                            <Select 
+                                title={'Nome Abrev'}
+                                name={'nomeAbrev'}
+                                data = {branches}
+                                register={register}
+                                errors={errors.nomeAbrev}
+                                value={store}
+                                setData={event => setStore(event.target.value)}
+                                disabled={idMounts ? true : false}
+                            />
+                            <Input 
+                                title={'Endereço'} 
+                                name="endereco" 
+                                type={'text'} 
+                                register={register}
+                                errors={errors.endereco}
+                                value={address}
+                                disabled={true}
+                            />    
+                        </div>
+
+                        <div className="formControl">   
+                            <Input 
+                                title={'Bairro'}
+                                name={'bairro'}
+                                type={'text'}
+                                register={register}
+                                errors={errors.bairro}                                
+                                value={neighborhood}   
+                                disabled={true}
+                            />
+                            <Input 
+                                title={'UF'}
+                                name={'uf'}
+                                type={'text'}
+                                value={uf}   
+                                register={register}
+                                errors={errors.uf}
+                                disabled={true}
+                            />
+                        </div>
+
+                        <div className="formControl">
+                            <Input 
+                                title={'Contato Loja'} 
+                                name="contatoLoja" 
+                                type={'text'} 
+                                register={register} 
+                                value={contact_store}
+                                errors={errors.contatoLoja} 
+                                setData={event => setContact_store(event.target.value)}
+                                disabled={idMounts ? true : false}
+                            />
+                            <Input 
+                                title={'Telefone Contato'} 
+                                name="telfoneContato" 
+                                type={'text'} 
+                                register={register} 
+                                value={contact_phone}
+                                errors={errors.contactTelefone} 
+                                setData={event => setContact_Phone(event.target.value)}
+                                disabled={idMounts ? true : false}
+                            />
+                        </div>
                         
                         <div className="formControl">
 

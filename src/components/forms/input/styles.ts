@@ -38,6 +38,7 @@ export const ContainerInput = styled.div`
     }
     input:disabled {
         background: #dddddd;
+        color: #000;
     }
 
     svg{

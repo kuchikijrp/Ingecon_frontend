@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import api from '../../../services/api';
 
-import Navbar from '../../../components/navbar';
+// import Navbar from '../../../components/navbar';
 import SideBar from '../../../components/sidebar';
 import Loading from '../../../components/Loading';
 import PagerHeader from '../../../components/PageHeader';
@@ -33,7 +33,7 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                 }
             });
 
-            console.log(requestsMounts.data);
+            // console.log(requestsMounts.data);
 
             if (requestsMounts.data.error){
                 toast.error(requestsMounts.data.error);
@@ -116,14 +116,27 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                 {
                                     Header: "INICIO",
                                     accessor: "start_work",
+                                    Cell: row => (
+                                        <span>{
+                                            new Date(row.value).toLocaleDateString('en-GB', {timeZone : 'UTC'}) 
+                                        }</span>
+                                    )
                                 },
                                 {
                                     Header: "FIM",
                                     accessor: "end_work",
+                                    Cell: row => (
+                                        <span>{
+                                            new Date(row.value).toLocaleDateString('en-GB', {timeZone : 'UTC'}) 
+                                        }</span>
+                                    )
                                 },
                                 {
                                     Header: "ORÇAMENTO",
                                     accessor: "budgeted",
+                                    Cell: row => (
+                                        <span>{row.value.toLocaleString()}</span>
+                                    )
                                 },
                                 {
                                     Header: "STATUS",

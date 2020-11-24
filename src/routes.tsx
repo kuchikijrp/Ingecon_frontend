@@ -10,7 +10,7 @@ import menu from './pages/menu';
 // Montagem Externa
 import solicitacaoMontagem from './pages/montagemExterna/novaSolicitacaoMontagem';
 import solicitacoesMontagem from './pages/montagemExterna/solicitacoesMontagem';
-import solicitacaoMontagemAprovacao from './pages/montagemExterna/solicitacoesMontagem/';
+// import solicitacaoMontagemAprovacao from './pages/montagemExterna/solicitacoesMontagem/';
 
 
 interface PrivateRouteProps extends RouteProps {

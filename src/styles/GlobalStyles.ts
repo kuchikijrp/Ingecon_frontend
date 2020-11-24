@@ -34,6 +34,7 @@ export default createGlobalStyle`
 
     :root{
         --primary: rgb(52, 67, 94);
+        /* --primary: rgb(26, 115, 232); */
         --secondary: rgba(68, 114, 196, 1);
         --tertiary: rgb(32, 34, 37);
 

@@ -18,9 +18,9 @@ export interface InputProps {
     type: string;
     placeholder?: string;
     title?: string;
-    register: RefReturn;
-    errors: FieldError | undefined;
-    setData: any;
+    register?: RefReturn;
+    errors?: FieldError | undefined;
+    setData?: any;
     disabled?: boolean;
     value?: string;
 }
@@ -37,7 +37,8 @@ const Input : React.FC<InputProps> = ({
                     <Error>{errors?.message}</Error>
                 </Headerinput>
                 <ContainerInput>
-                    <input name={name} type={type} ref={register} placeholder={placeholder} onChange={setData} disabled={disabled} value={value} step="any"/>
+                    {/* <input name={name} type={type} ref={register} placeholder={placeholder} onChange={setData} disabled={disabled} step="any"/> */}
+                    <input name={name} type={type} ref={register} placeholder={placeholder} onChange={setData} disabled={disabled} value={value ? value : ''} step="any"/>
                     {errors && <FiAlertCircle size={20} />}
                 </ContainerInput>
             </Container>

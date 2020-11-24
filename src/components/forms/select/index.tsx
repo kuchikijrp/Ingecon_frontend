@@ -30,7 +30,9 @@ interface SelectProps {
 const Select : React.FC<SelectProps> = ({
     name, title, register, errors, data, setData, value, disabled
 }) => {
+    // console.log(data);
     return (
+    
         <>  
             <Container>
                 <Headerselect>
@@ -38,7 +40,7 @@ const Select : React.FC<SelectProps> = ({
                     <Error>{errors?.message}</Error>
                 </Headerselect>
                 <ContainerSelect>
-                    <select disabled={disabled} value={value} defaultValue={''} name={name} ref={register} onChange={setData}>
+                    <select disabled={disabled} value={value} name={name} ref={register} onChange={setData}>
                         <option value="" disabled hidden>--SELECIONE</option>
 
                         {
