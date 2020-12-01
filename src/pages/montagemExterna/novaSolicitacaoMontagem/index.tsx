@@ -107,6 +107,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                         authorization: `Bearer ${token}`
                     }
                 })
+                // console.log(mount)
 
             if (mount.data.error){
                 toast.error(mount.data.error)
@@ -130,6 +131,7 @@ const SolicitacaoMontagem: React.FC  = () => {
 
             }
 
+            getFiliais()
 
             // console.log(mount)
         } catch (err) {
@@ -169,10 +171,11 @@ const SolicitacaoMontagem: React.FC  = () => {
 
         }
 
-          if (idMount !== "")
-            getMount()
-
-            getFiliais()
+        if (idMount !== "")
+        getMount()
+        
+        // if (idMount === "")
+        getFiliais()
 
       }, [])
 
@@ -187,7 +190,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                 headers: {
                     authorization: `Bearer ${token}`
                 }})
-
+// console.log(response)
                 if (response.data.error){
                     toast.error(response.data.error)
                 }else{
@@ -271,6 +274,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                 {
                     idMount : idMounts,
                     status : aprovacao,
+                    obs : obsAprovador,
                     emailUser
                 },{
                     headers: {
@@ -508,7 +512,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                                         <TextArea 
                                             title={"Obs. Aprovador"} 
                                             name={"obsAprovador"} 
-                                            rows={4} 
+                                            rows={1} 
                                             cols={50} 
                                             register={register} 
                                             value={obsAprovador}

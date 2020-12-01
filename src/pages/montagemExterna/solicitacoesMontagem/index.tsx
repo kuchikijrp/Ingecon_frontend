@@ -143,11 +143,11 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                     accessor: "status",
                                     Cell: row => (
                                         <div style={{display:'flex', flexDirection:'row', padding: '0 5%', alignItems: 'center', fontSize: '18px',}}>
-                                        <span style={{
+                                        {/* <span style={{
                                             
                                             marginRight: '5%',
                                             color: 
-                                                row.value === 'Em Analise'  ? '#ddd' : 
+                                                row.value === 'Em Analise'  ? '#999' : 
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
@@ -155,7 +155,42 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                                 '',
                                             transition: 'all .3s ease'
                                         }}>
-                                          &#x25cf;</span>
+                                          &#x25cf;</span> */}
+                                        <span style={{
+                                            width: '10px',
+                                            height: '10px',
+                                            borderRadius: '50%',   
+                                            marginRight: '5%',
+                                            background: 
+                                                row.value === 'Em Analise'  ? '#999' : 
+                                                row.value === 'Reprovado'   ? '#D63230' : 
+                                                row.value === 'Aprovado'    ? '#40BCD8' :
+                                                row.value === 'Serviço Iniciado' ? '#F28C37' :
+                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                '',
+                                            boxShadow:  `0 0 5px ${row.value === 'Em Analise'  ? '#999' : 
+                                                row.value === 'Reprovado'   ? '#D63230' : 
+                                                row.value === 'Aprovado'    ? '#40BCD8' :
+                                                row.value === 'Serviço Iniciado' ? '#F28C37' :
+                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                ''}, 0 0 10px ${row.value === 'Em Analise'  ? '#999' : 
+                                                row.value === 'Reprovado'   ? '#D63230' : 
+                                                row.value === 'Aprovado'    ? '#40BCD8' :
+                                                row.value === 'Serviço Iniciado' ? '#F28C37' :
+                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                ''}, 0 0 20px  ${row.value === 'Em Analise'  ? '#999' : 
+                                                row.value === 'Reprovado'   ? '#D63230' : 
+                                                row.value === 'Aprovado'    ? '#40BCD8' :
+                                                row.value === 'Serviço Iniciado' ? '#F28C37' :
+                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                ''}, 0 0 40px ${row.value === 'Em Analise'  ? '#999' : 
+                                                row.value === 'Reprovado'   ? '#D63230' : 
+                                                row.value === 'Aprovado'    ? '#40BCD8' :
+                                                row.value === 'Serviço Iniciado' ? '#F28C37' :
+                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                ''}`,
+                                            transition: 'all .3s ease'
+                                        }}></span>
                                           {row.value}
                                           </div>
                                     )
