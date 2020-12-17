@@ -20,8 +20,16 @@ import { Grid } from '../../../styles/grid';
 const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
     const [loading, setLoading] = useState(false);
     const [solicitacoes, setSolicitacoes] = useState([]);
+    const [userRule, setUserRule] = useState(false);
 
+    
     useEffect(()=> {
+        const rules = JSON.parse(localStorage.getItem('rules') || '');
+        rules.map(rule => {
+            if(rule.name === 'montagemExterna_ADM')
+                return setUserRule(rule.name);
+        })
+
         async function handleGetRequestsMounts(){
         setLoading(true);
             const token = sessionStorage.getItem('token');
@@ -95,11 +103,17 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                             // Header: "Name",
                             columns: [
                                 {
-                                    Header: "NÚM. SOLIC.",
+                                    Header: "ID",
                                     accessor: "id",
+                                    maxWidth: 50,
                                     Cell: row => (
                                         <NavLink to={`/solicitacaoMontagem/${row.value}`}>{row.value}</NavLink>
-                                    ),
+                                    )
+                                },
+                                {
+                                    Header: "SOLICITANTE",
+                                    accessor: 'mountsToUser.usuario',
+                                    show: userRule? true : false
                                 },
                                 {
                                     Header: "TIPO SERVIÇO",
@@ -112,6 +126,15 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                 {
                                     Header: "LOJA",
                                     accessor: "store",
+                                },
+                                {
+                                    Header: "SOLICITAÇÃO",
+                                    accessor: "createdAt",
+                                    Cell: row => (
+                                        <span>{
+                                            new Date(row.value).toLocaleDateString('en-GB', {timeZone : 'UTC'}) 
+                                        }</span>
+                                    )
                                 },
                                 {
                                     Header: "INICIO",
@@ -142,7 +165,7 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                     Header: "STATUS",
                                     accessor: "status",
                                     Cell: row => (
-                                        <div style={{display:'flex', flexDirection:'row', padding: '0 5%', alignItems: 'center', fontSize: '18px',}}>
+                                        <div style={{width: '200px', display:'flex', flexDirection:'row', padding: '0 5%', alignItems: 'center', fontSize: '18px',}}>
                                         {/* <span style={{
                                             
                                             marginRight: '5%',
@@ -151,7 +174,7 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
-                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                row.value === 'Serviço Finalizado' ? '#0f0' :
                                                 '',
                                             transition: 'all .3s ease'
                                         }}>
@@ -159,35 +182,35 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                         <span style={{
                                             width: '10px',
                                             height: '10px',
-                                            borderRadius: '50%',   
+                                            borderRadius: '5px',   
                                             marginRight: '5%',
                                             background: 
                                                 row.value === 'Em Analise'  ? '#999' : 
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
-                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 '',
                                             boxShadow:  `0 0 5px ${row.value === 'Em Analise'  ? '#999' : 
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
-                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 ''}, 0 0 10px ${row.value === 'Em Analise'  ? '#999' : 
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
-                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 ''}, 0 0 20px  ${row.value === 'Em Analise'  ? '#999' : 
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
-                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 ''}, 0 0 40px ${row.value === 'Em Analise'  ? '#999' : 
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
-                                                row.value === 'Serviço Finalizado' ? '#37FF8B' :
+                                                row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 ''}`,
                                             transition: 'all .3s ease'
                                         }}></span>

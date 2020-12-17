@@ -20,8 +20,8 @@ export interface TextAreaProps {
     errors: FieldError | undefined;
     disabled?: boolean;
     value?: string;
-    rows: number;
-    cols: number;
+    rows?: number;
+    cols?: number;
     setData: any;
 }
 

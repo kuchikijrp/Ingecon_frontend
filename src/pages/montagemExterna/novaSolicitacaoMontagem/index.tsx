@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import { mask } from 'remask';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers';
@@ -11,6 +12,7 @@ import SideBar from '../../../components/sidebar';
 import PagerHeader from '../../../components/PageHeader';
 
 import Input from '../../../components/forms/input';
+import InputMask from '../../../components/forms/inputMask';
 import Select from '../../../components/forms/select';
 import Button from '../../../components/forms/button';
 import TextArea from '../../../components/forms/textArea';
@@ -60,6 +62,7 @@ const schema = yup.object().shape({
 
 const SolicitacaoMontagem: React.FC  = () => {
     const [idMounts, setIdMounts]= useState('');
+    const [userRule, setUserRule] = useState(false);
     
     const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
@@ -84,11 +87,13 @@ const SolicitacaoMontagem: React.FC  = () => {
     const [time_discharge, setTimeDischarge] = useState('');
     const [time_work, setTimeWork] = useState('');
     const [obs, setObs] = useState('');
+    const [emailDonoMont, setEmailDonoMont] = useState('');
 
     const [branches, setBranches] = useState([]);
 
     const [aprovacao, setAprovacao] = useState('');
     const [obsAprovador, setObsAprovador] = useState('');
+    const [obssAprovador, setObssAprovador] = useState('');
 
     const { idMount="" } = useParams();
     
@@ -97,7 +102,13 @@ const SolicitacaoMontagem: React.FC  = () => {
         
         async function getMount(){
         const token = sessionStorage.getItem('token');
-        
+
+        const rules = JSON.parse(localStorage.getItem('rules') || '');
+        rules.map(rule => {
+            if(rule.name === 'montagemExterna_ADM')
+                return setUserRule(rule.name);
+        })
+        // console.log(userRule)
         setLoading(true);
 
         try {
@@ -125,13 +136,34 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setBudgeted(mount.data?.budgeted || null);
                 setQtdFitters(mount.data?.qtd_fitters || null);
                 setObs(mount.data?.obs || null);
-                
+                setEmailDonoMont(mount.data.mountsToUser?.email || null);
+
                 if(mount.data?.status !== "Em Analise")
                     setAprovacao(mount.data?.status || null);
 
-            }
+                
+                const approvals = await api.get(`/approvalmounts/${idMount}`,
+                {
+                    headers:{
+                        authorization: `Bearer ${token}`
+                    }
+                })
 
+                if (approvals.data.error){
+                    toast.error(approvals.data.error)
+                }else{
+                    setObssAprovador(approvals.data.map(approval =>{
+                        return (`**${new Date(approval.createdAt).toLocaleDateString('en-GB', {timeZone : 'UTC'}) } - ${new Date(approval.createdAt).toLocaleTimeString('en-GB', {timeZone : 'UTC'}) } : ${approval.user_name} - ${approval.status}${approval.obs? ' : ' + approval.obs : ''}**`)
+                    }))
+
+                }
+                
+            }
+            
+            
+            
             getFiliais()
+            // console.log(obssAprovador)
 
             // console.log(mount)
         } catch (err) {
@@ -275,7 +307,10 @@ const SolicitacaoMontagem: React.FC  = () => {
                     idMount : idMounts,
                     status : aprovacao,
                     obs : obsAprovador,
-                    emailUser
+                    obsTotal: !obssAprovador? obs : obs? obs + '\n' + obssAprovador.toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**") : obssAprovador.toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**"),
+                    emailUser,
+                    emailDonoMont
+
                 },{
                     headers: {
                         authorization: `Bearer ${token}`
@@ -407,7 +442,8 @@ const SolicitacaoMontagem: React.FC  = () => {
                                 name="telfoneContato" 
                                 type={'text'} 
                                 register={register} 
-                                value={contact_phone}
+                                value={mask(contact_phone, ['(99) 9999-9999', '(99) 9 9999-9999'])}
+                                // value={contact_phone}
                                 errors={errors.contactTelefone} 
                                 setData={event => setContact_Phone(event.target.value)}
                                 disabled={idMounts ? true : false}
@@ -464,13 +500,24 @@ const SolicitacaoMontagem: React.FC  = () => {
                             <Input 
                                 title={'Orçamento'} 
                                 name="orcamento" 
-                                type={'number'} 
+                                type={'text'} 
                                 register={register} 
-                                value={budgeted}
+                                value={mask(budgeted, ['99','9,99','99,99','999,99','9.999,99','99.999,99','999.999,99'])}
+                                // value={budgeted}
                                 errors={errors.orcamento} 
                                 setData={event => setBudgeted(event.target.value)}
                                 disabled={idMounts ? true : false}
                             />
+                            {/* <InputMask 
+                                title={'Orçamento'} 
+                                name="orcamento" 
+                                type={'text'} 
+                                register={register} 
+                                value={budgeted}
+                                errors={errors.orcamento} 
+                                setData={event => setBudgeted(mask(event.target.value, ['999.999.999']))}
+                                disabled={idMounts ? true : false}
+                            /> */}
                             <Input 
                                 title={'Qtd. Montadores'} 
                                 name="qtdMontadores" 
@@ -486,46 +533,55 @@ const SolicitacaoMontagem: React.FC  = () => {
                             <TextArea 
                                 title={"OBS."} 
                                 name={"obs"} 
-                                rows={2} 
-                                cols={50} 
+                                rows={6} 
+                                // cols={50} 
                                 register={register} 
-                                value={obs}
+                                // value={obssAprovador}
+                                value ={!obssAprovador? obs : obs? obs + '\n' + obssAprovador.toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**") : obssAprovador.toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**")}
                                 errors={errors.obs} 
                                 setData={event => setObs(event.target.value)}
                                 disabled={idMounts ? true : false}
                             />
                         </div>
                             <div className="separator"></div>
-                            {idMounts?
-                                <>
-                                <div className="formControl">
-                                        <Select 
-                                            name={'aprovacao'} 
-                                            title={'Status'}
-                                            data={[{id: 1, name: 'Aprovado'},{id: 2, name: 'Reprovado'},{id: 3, name: 'Serviço Iniciado'},{id: 4, name: 'Serviço Finalizado'}]} 
-                                            register={register} 
-                                            errors={errors.aprovacao} 
-                                            value={aprovacao}
-                                            setData={event => setAprovacao(event.target.value)} 
-                                        />
-
+                                {idMounts?
+                                    // userRule?
+                                    <>
+                                    <div className="formControl">
+                                            <Select 
+                                                name={'aprovacao'} 
+                                                title={'Status'}
+                                                data={[{id: 1, name: 'Aprovado'},{id: 2, name: 'Reprovado'},{id: 3, name: 'Serviço Iniciado'},{id: 4, name: 'Serviço Finalizado'}]} 
+                                                register={register} 
+                                                errors={errors.aprovacao} 
+                                                value={aprovacao}
+                                                setData={event => setAprovacao(event.target.value)} 
+                                                disabled={!userRule ? true : false}
+                                            />
+                                    </div>
+                                {!userRule ? '' :
+                                    <>
+                                    <div className="formControl">
                                         <TextArea 
-                                            title={"Obs. Aprovador"} 
-                                            name={"obsAprovador"} 
-                                            rows={1} 
-                                            cols={50} 
-                                            register={register} 
-                                            value={obsAprovador}
-                                            errors={errors.obs} 
-                                            setData={event => setObsAprovador(event.target.value)}
-                                            // disabled={idMounts ? true : false}
+                                        title={"OBS. Aprovador"} 
+                                        name={"obsAprovador"} 
+                                        rows={2} 
+                                        cols={50} 
+                                        register={register} 
+                                        value={obsAprovador}
+                                        errors={errors.obs} 
+                                        setData={event => setObsAprovador(event.target.value)}
+                                        disabled={!userRule ? true : false}
                                         /> 
-                                </div>
-                                    <Button onClicks={handle_editSolicitacao} name={'Salvar'} />
-                                </>
-                            : 
-                                <Button onClicks={handleSubmit(handle_salvarSolicitacao)} name={'Solicitar'} />
-                            }
+                                    </div>
+                                                                         <Button onClicks={handle_editSolicitacao} name={'Salvar'} /> 
+                                    </>}
+                                    </>
+                                    // :
+                                    // ''
+                                : 
+                                    <Button onClicks={handleSubmit(handle_salvarSolicitacao)} name={'Solicitar'} />
+                                }
 
 
                     </form>

@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FieldError } from 'react-hook-form';
-import { FiAlertCircle } from 'react-icons/fi'
+import { FiAlertCircle } from 'react-icons/fi';
+import { mask, unMask } from 'remask';
 
 
 import { Container, ContainerInput, Headerinput, Title, Error } from './styles';
 
 
 type RefReturn =
-    | string
-    |((instance: HTMLInputElement | null) => void)
-    |React.RefObject<HTMLInputElement>
-    |null
-    |undefined;
+| string
+|((instance: HTMLInputElement | null) => void)
+|React.RefObject<HTMLInputElement>
+|null
+|undefined;
 
 export interface InputProps {
     name: string;
@@ -28,7 +29,7 @@ export interface InputProps {
 const Input : React.FC<InputProps> = ({
     name, type, placeholder, title, register, errors, setData, disabled, value
 }) => {
-    // console.log(value);
+    // console.log(mask('juliano', ['AAAS']))
     return (
         <>  
             <Container>

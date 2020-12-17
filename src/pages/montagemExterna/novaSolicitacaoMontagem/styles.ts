@@ -7,14 +7,27 @@ export const Menu = styled.div`
 export const Wrapper = styled.div`
     grid-area: CP;
     padding: 1%;
+    overflow: hidden;
 `;
 
 export const Content = styled.div`
     /* background: red; */
-    width: 70%;
+    width: 100%;
     min-width: 650px;
 
+    padding: 0 8%;
+
+    max-height: 87%;
+
     margin: 20px auto;
+
+    overflow-y: auto;
+    ::-webkit-scrollbar {
+        /* width: 0px; */
+        display: none;
+    }
+    form {
+    }
 
     form .formControl{
         /* flex:1; */
