@@ -95,6 +95,16 @@ const SolicitacaoMontagem: React.FC  = () => {
     const [obsAprovador, setObsAprovador] = useState('');
     const [obssAprovador, setObssAprovador] = useState('');
 
+    const [alimentacao, setAlimentacao] = useState('');
+    const [material, setMaterial] = useState('');
+    const [deslocamento, setDeslocamento] = useState('');
+    const [combustivel, setCombustivel] = useState('');
+    const [passagem, setPassagem] = useState('');
+    const [hospedagem, setHospedagem] = useState('');
+    const [terceiros, setTerceiros] = useState('');
+    const [outros, setOutros] = useState('');
+    const [despesas, setDespesas] = useState('');
+
     const { idMount="" } = useParams();
     
     useEffect(() => {
@@ -137,6 +147,15 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setQtdFitters(mount.data?.qtd_fitters || null);
                 setObs(mount.data?.obs || null);
                 setEmailDonoMont(mount.data.mountsToUser?.email || null);
+
+                setAlimentacao(mount.data?.vl_alimentacao || '')
+                setMaterial(mount.data?.vl_material || '')
+                setDeslocamento(mount.data?.vl_deslocamento || '')
+                setCombustivel(mount.data?.vl_combustivel || '')
+                setPassagem(mount.data?.vl_passagem || '')
+                setHospedagem(mount.data?.vl_hospedagem || '')
+                setTerceiros(mount.data?.vl_terceiros|| '')
+                setOutros(mount.data?.vl_outros|| '')
 
                 if(mount.data?.status !== "Em Analise")
                     setAprovacao(mount.data?.status || null);
@@ -240,6 +259,22 @@ const SolicitacaoMontagem: React.FC  = () => {
         getStore()
       }, [store])
 
+    useEffect(() => {
+        const vAlimentacao = alimentacao !== ''? parseFloat(alimentacao) : parseFloat(alimentacao?.replace(',', '.')) || 0;
+        const vMaterial = material !== '' ? parseFloat(material) : parseFloat(material.replace(',', '.')) || 0;
+        const vDeslocamento = deslocamento !== ''? parseFloat(deslocamento) : parseFloat(deslocamento.replace(',', '.')) || 0;
+        const vCombustivel = combustivel !== ''? parseFloat(combustivel) : parseFloat(combustivel.replace(',', '.')) || 0;
+        const vPassagem = passagem !== ''? parseFloat(passagem) : parseFloat(passagem.replace(',', '.')) || 0;
+        const vHospedagem = hospedagem !== ''? parseFloat(hospedagem) : parseFloat(hospedagem.replace(',', '.')) || 0;
+        const vTerceiros = terceiros !== ''? parseFloat(terceiros) : parseFloat(terceiros.replace(',', '.')) || 0;
+        const vOutros = outros !== ''? parseFloat(outros) : parseFloat(outros.replace(',', '.')) || 0;
+        
+        const desp = vAlimentacao + vMaterial + vDeslocamento + vCombustivel + vPassagem + vHospedagem + vTerceiros + vOutros;
+        
+        // console.log(vAlimentacao)
+        setDespesas(desp.toString())
+    }, [alimentacao, material, deslocamento, combustivel, passagem, hospedagem, terceiros, outros])
+
     async function handle_salvarSolicitacao(event: any){
         // event.preventDefault();
         const token = sessionStorage.getItem('token');
@@ -309,7 +344,16 @@ const SolicitacaoMontagem: React.FC  = () => {
                     obs : obsAprovador,
                     obsTotal: !obssAprovador? obs : obs? obs + '\n' + obssAprovador.toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**") : obssAprovador.toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**").toString().replace(",**", "\n**"),
                     emailUser,
-                    emailDonoMont
+                    emailDonoMont,
+                    alimentacao,
+                    material,
+                    deslocamento,
+                    combustivel,
+                    passagem,
+                    hospedagem,
+                    terceiros,
+                    outros,
+                    despesas
 
                 },{
                     headers: {
@@ -359,7 +403,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                                 setData={event => setType(event.target.value)}
                                 disabled={idMounts ? true : false}
                                 />
-                                
+                            {/* <InputMask placeholder={'ddk'}  />    */}
                             <Input 
                                 title={'Núm. AT'} 
                                 name={'numAt'} 
@@ -442,8 +486,8 @@ const SolicitacaoMontagem: React.FC  = () => {
                                 name="telfoneContato" 
                                 type={'text'} 
                                 register={register} 
-                                value={mask(contact_phone, ['(99) 9999-9999', '(99) 9 9999-9999'])}
-                                // value={contact_phone}
+                                // value={mask(contact_phone, ['(99) 9999-9999', '(99) 9 9999-9999'])}
+                                value={contact_phone}
                                 errors={errors.contactTelefone} 
                                 setData={event => setContact_Phone(event.target.value)}
                                 disabled={idMounts ? true : false}
@@ -502,8 +546,8 @@ const SolicitacaoMontagem: React.FC  = () => {
                                 name="orcamento" 
                                 type={'text'} 
                                 register={register} 
-                                value={mask(budgeted, ['99','9,99','99,99','999,99','9.999,99','99.999,99','999.999,99'])}
-                                // value={budgeted}
+                                // value={mask(budgeted, ['99','9,99','99,99','999,99','9.999,99','99.999,99','999.999,99'])}
+                                value={budgeted}
                                 errors={errors.orcamento} 
                                 setData={event => setBudgeted(event.target.value)}
                                 disabled={idMounts ? true : false}
@@ -557,10 +601,87 @@ const SolicitacaoMontagem: React.FC  = () => {
                                                 value={aprovacao}
                                                 setData={event => setAprovacao(event.target.value)} 
                                                 disabled={!userRule ? true : false}
+                                                />
+                                    </div>
+                                        {!userRule ? '' :
+                                    <>
+                                    <div className="separator"></div>
+                                    <div className="formControl">
+                                        <Input 
+                                            title={"Alimentação"}
+                                            name={'vlAlimentacao'}
+                                            type={'number'}
+                                            value={alimentacao}
+                                            setData={event => setAlimentacao(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Material"}
+                                            name={'vlMaterial'}
+                                            type={'number'}
+                                            value={material}
+                                            setData={event => setMaterial(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Deslocamento"}
+                                            name={'vlDeslocamento'}
+                                            type={'text'}
+                                            value={deslocamento}
+                                            setData={event => setDeslocamento(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Combustivel"}
+                                            name={'vlCombustivel'}
+                                            value={combustivel}
+                                            setData={event => setCombustivel(event.target.value)} 
+                                            type={'text'}
+                                            disabled={!userRule ? true : false}
                                             />
                                     </div>
-                                {!userRule ? '' :
-                                    <>
+                                    <div className="formControl">
+                                        <Input 
+                                            title={"Passagem"}
+                                            name={'vlPassagem'}
+                                            type={'text'}
+                                            value={passagem}
+                                            setData={event => setPassagem(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Hospedagem"}
+                                            name={'vlHospedagem'}
+                                            type={'text'}
+                                            value={hospedagem}
+                                            setData={event => setHospedagem(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Terceiros"}
+                                            name={'vlTerceiros'}
+                                            type={'text'}
+                                            value={terceiros}
+                                            setData={event => setTerceiros(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Outros"}
+                                            name={'vlOutros'}
+                                            type={'text'}
+                                            value={outros}
+                                            setData={event => setOutros(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Total Despesas"}
+                                            name={'tDespesas'}
+                                            type={'text'}
+                                            value={despesas}
+                                            // setData={event => setAprovacao(event.target.value)} 
+                                            disabled={true}
+                                            />
+                                    </div>
                                     <div className="formControl">
                                         <TextArea 
                                         title={"OBS. Aprovador"} 
