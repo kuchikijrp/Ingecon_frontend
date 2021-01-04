@@ -2,3 +2,7 @@
 [1127/130349.793:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
 [1218/065546.135:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
 [1218/080314.209:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\juliano.piris\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\b8f4bb10-4277-41b0-a733-a74a4d1e5d71: O sistema não pode encontrar o caminho especificado. (0x3)
+[1223/230647.403:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1225/233904.612:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[0101/135104.939:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[0103/084617.060:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)

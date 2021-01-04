@@ -23,11 +23,10 @@ export interface InputProps {
     setData?: any;
     disabled?: boolean;
     value?: string;
-    focus?: boolean;
 }
 
-const Input : React.FC<InputProps> = ({
-    name, type, placeholder, title, register, errors, setData, disabled, value, focus
+const Checkbox : React.FC<InputProps> = ({
+    name, type, placeholder, title, register, errors, setData, disabled, value
 }) => {
     // console.log(value);
     return (
@@ -39,7 +38,7 @@ const Input : React.FC<InputProps> = ({
                 </Headerinput>
                 <ContainerInput>
                     {/* <input name={name} type={type} ref={register} placeholder={placeholder} onChange={setData} disabled={disabled} step="any"/> */}
-                    <input name={name} type={type} ref={register} placeholder={placeholder} onChange={setData} disabled={disabled} autoFocus={focus} value={value ? value : ''} step="any"/>
+                    <input name={name} type={type} ref={register} placeholder={placeholder} onChange={setData} disabled={disabled} value={value ? value : ''} step="any"/>
                     {errors && <FiAlertCircle size={20} />}
                 </ContainerInput>
             </Container>
@@ -47,4 +46,4 @@ const Input : React.FC<InputProps> = ({
     )
 }
 
-export default Input
+export default Checkbox

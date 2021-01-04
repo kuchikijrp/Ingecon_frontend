@@ -6,7 +6,7 @@ import {Container, Content, LogoIngecon, WrapperInput, LogoMarelli } from './sty
 
 import api from '../../services/api';
 
-import Loading from '../Loading';
+import Loading from '../../components/Loading';
 
 import logoIngecon from '../../assets/logo_Ingecon.svg';
 import logoMarelli from '../../assets/logo_marelli.svg';
@@ -41,12 +41,32 @@ const Login: React.FC<RouteComponentProps> = ({history}) => {
             // setMsg(response.data.error);
             setLoading(false);
         } else {
-            
-            localStorage.setItem("user", JSON.stringify(response.data.user));
-            localStorage.setItem("rules", JSON.stringify(response.data.rules));
-            sessionStorage.setItem('token', response.data.token);
-            history.push('/solicitacoesMontagem');
-        }
+            // console.log(response.data)
+            if(response.data?.user?.reset_pass == 1){
+                    // toast.info('Senha temporária, necessario mudar');
+                    alert('Senha temporária, necessario mudar');
+                    history.push(`/resetPassword/${response.data.user.id}`);
+                
+                }else{
+                    localStorage.setItem("user", JSON.stringify(response.data.user));
+                    localStorage.setItem("rules", JSON.stringify(response.data.rules));
+                    sessionStorage.setItem('token', response.data.token);
+
+                    const menu = await api.get('/montarMenu', 
+                    {
+                        headers: {
+                            "authorization": `Bearer ${response.data.token}`
+                        }
+                    });
+
+                    if(menu?.data){
+                        console.log(menu.data)
+                        localStorage.setItem("itensMenu", JSON.stringify(menu.data))
+                    }
+
+                    history.push('/menu');
+                }
+            }
     setLoading(false);
     }
 

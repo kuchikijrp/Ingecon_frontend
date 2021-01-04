@@ -21,7 +21,7 @@ export const Wrapper = styled.div`
 
 export const Content = styled.div`
     /* background: red; */
-    width: 92%;
+    width: 50%;
     /* min-width: 650px; */
 
     margin: 8px auto;

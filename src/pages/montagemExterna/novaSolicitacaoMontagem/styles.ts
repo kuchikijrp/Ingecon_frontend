@@ -4,6 +4,10 @@ export const Menu = styled.div`
     grid-area: SB;
 `;
 
+export const NavbarContainer = styled.div`
+    grid-area: NB;
+`;
+
 export const Wrapper = styled.div`
     grid-area: CP;
     padding: 1%;
@@ -17,15 +21,17 @@ export const Content = styled.div`
 
     padding: 0 8%;
 
-    max-height: 87%;
+    height: calc(100vh - 170px);
 
     margin: 20px auto;
 
     overflow-y: auto;
     ::-webkit-scrollbar {
         /* width: 0px; */
-        display: none;
+        /* display: none; */
     }
+
+
     form {
     }
 

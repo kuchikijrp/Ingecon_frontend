@@ -19,12 +19,12 @@ interface FieldData {
 interface SelectProps {
     name: string;
     title?: string;
-    register: RefReturn;
-    errors: FieldError | undefined;
+    register?: RefReturn;
+    errors?: FieldError | undefined;
     data: FieldData[];
     value?: string;
     disabled?: boolean;
-    setData: any | undefined;
+    setData?: any | undefined;
 }
 
 const Select : React.FC<SelectProps> = ({

@@ -1,18 +1,18 @@
 import React, {useState, useEffect} from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { mask } from 'remask';
+import { useParams } from 'react-router-dom';
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers';
 import * as yup from "yup";
+
 import { ToastContainer, toast } from 'react-toastify';
 
-import SideBar from '../../../components/sidebar';
+import SideBar from '../../../components/sidebar2';
+import Navbar from '../../../components/navbar';
 
 import PagerHeader from '../../../components/PageHeader';
 
 import Input from '../../../components/forms/input';
-import InputMask from '../../../components/forms/inputMask';
 import Select from '../../../components/forms/select';
 import Button from '../../../components/forms/button';
 import TextArea from '../../../components/forms/textArea';
@@ -21,8 +21,9 @@ import api from '../../../services/api';
 
 import Loading from '../../../components/Loading';
 
-import { Menu, Wrapper, Content, } from './styles';
+import { Menu, NavbarContainer, Wrapper, Content, } from './styles';
 import { Grid } from '../../../styles/grid';
+
 
 type InputsProps={
     tipo: string;
@@ -115,7 +116,7 @@ const SolicitacaoMontagem: React.FC  = () => {
 
         const rules = JSON.parse(localStorage.getItem('rules') || '');
         rules.map(rule => {
-            if(rule.name === 'montagemExterna_ADM')
+            if(rule.name === 'montagemExterna_ADM' || rule.name === 'ROLE_SUPER')
                 return setUserRule(rule.name);
         })
         // console.log(userRule)
@@ -387,9 +388,15 @@ const SolicitacaoMontagem: React.FC  = () => {
             <Menu >
                 <SideBar />
             </Menu>
+            <NavbarContainer>
+                <Navbar />
+            </NavbarContainer>
 
             <Wrapper>
             <PagerHeader  header={'Solicitação Montagem'} />
+
+                {/* <InputMask placeholder="hola" setData={event => setBudgeted(event.target.value)} />    */}
+
                 <Content>
                     <form >
                         <div className="formControl">
@@ -403,7 +410,6 @@ const SolicitacaoMontagem: React.FC  = () => {
                                 setData={event => setType(event.target.value)}
                                 disabled={idMounts ? true : false}
                                 />
-                            {/* <InputMask placeholder={'ddk'}  />    */}
                             <Input 
                                 title={'Núm. AT'} 
                                 name={'numAt'} 
@@ -544,7 +550,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                             <Input 
                                 title={'Orçamento'} 
                                 name="orcamento" 
-                                type={'text'} 
+                                type={'number'} 
                                 register={register} 
                                 // value={mask(budgeted, ['99','9,99','99,99','999,99','9.999,99','99.999,99','999.999,99'])}
                                 value={budgeted}

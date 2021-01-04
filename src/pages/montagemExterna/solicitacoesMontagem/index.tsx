@@ -4,15 +4,15 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import api from '../../../services/api';
 
-// import Navbar from '../../../components/navbar';
-import SideBar from '../../../components/sidebar';
+import Navbar from '../../../components/navbar';
+import SideBar from '../../../components/sidebar2';
 import Loading from '../../../components/Loading';
 import PagerHeader from '../../../components/PageHeader';
 
 import Button from '../../../components/forms/button';
 
-import ReactTable from 'react-table-v6'
-import 'react-table-v6/react-table.css'
+import ReactTable from 'react-table-v6';
+import 'react-table-v6/react-table.css';
 
 import { NavbarContainer, Menu, Wrapper, Content } from './styles';
 import { Grid } from '../../../styles/grid';
@@ -21,13 +21,12 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
     const [loading, setLoading] = useState(false);
     const [solicitacoes, setSolicitacoes] = useState([]);
     const [userRule, setUserRule] = useState(false);
-
     
     useEffect(()=> {
         const rules = JSON.parse(localStorage.getItem('rules') || '');
         rules.map(rule => {
             if(rule.name === 'montagemExterna_ADM')
-                return setUserRule(rule.name);
+                return setUserRule(rule.name || '');
         })
 
         async function handleGetRequestsMounts(){
@@ -82,7 +81,10 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
             <Menu >
                 <SideBar />
             </Menu>
-
+            <NavbarContainer>
+                <Navbar />
+            </NavbarContainer>
+            
             <Wrapper>
             <PagerHeader  header={'Minhas Montagens'} />
             <Button name={<NavLink  to='/solicitacaoMontagem' style={{color: '#fff', textDecoration: 'none'}}>Nova Solicitação</NavLink >} />
@@ -113,7 +115,7 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                 {
                                     Header: "SOLICITANTE",
                                     accessor: 'mountsToUser.usuario',
-                                    show: userRule? true : false
+                                    // show: userRule? true : false
                                 },
                                 {
                                     Header: "TIPO SERVIÇO",
@@ -221,10 +223,10 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                             ]
                             }
                         ]}
-                        defaultPageSize={30}
-                        style={{
-                            height: "73vh", // This will force the table body to overflow and scroll, since there is not enough room
-                        }}
+                        defaultPageSize={25}
+                        // style={{
+                        //     height: "73vh", // This will force the table body to overflow and scroll, since there is not enough room
+                        // }}
                         className="-striped -highlight"
                         />
                 </Content>

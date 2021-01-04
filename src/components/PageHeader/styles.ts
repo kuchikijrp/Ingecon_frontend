@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 
 export const Container = styled.div`
-    background-color: var(--primary);
+    /* background-color: var(--secondary); */
+    background: linear-gradient(to right, #314755 50%, #26a0da);
     border-radius:8px;
 
     padding: 10px 30px;

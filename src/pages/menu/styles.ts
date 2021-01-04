@@ -1,15 +1,20 @@
 import styled from "styled-components";
 
-export const Grid = styled.div`
-    display: grid;
+export const Container = styled.div`
 
-    grid-template-rows: 7vh auto;
-    grid-template-columns: 15vw auto;
+`;
 
-    grid-template-areas: 
-        'LG TB'
-        'SB CP';
+export const NavbarContainer = styled.div`
+    grid-area: NB;
+`;
 
-    height: 100vh;
-    min-width: 1000px;
+
+export const Menu = styled.div`
+    grid-area: SB;
+`;
+
+export const Wrapper = styled.div`
+    grid-area: CP;
+    padding: 1%;
+    height: 50px;
 `;

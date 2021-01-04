@@ -4,13 +4,16 @@ import { BrowserRouter, Switch, Route, Redirect, RouteProps } from 'react-router
 
 import {isAuthenticated} from './auth';
 
-import login from './components/Login';
+import login from './pages/Login';
+import resetPassword from './pages/Login/resetPassword';
 import menu from './pages/menu';
 
+import users from './pages/users'
+import newUser from './pages/users/newUser'
+
 // Montagem Externa
-import solicitacaoMontagem from './pages/montagemExterna/novaSolicitacaoMontagem';
+import solicitacaoMontagem from './pages/montagemExterna/novaSolicitacaoMontagem/index';
 import solicitacoesMontagem from './pages/montagemExterna/solicitacoesMontagem';
-// import solicitacaoMontagemAprovacao from './pages/montagemExterna/solicitacoesMontagem/';
 
 
 interface PrivateRouteProps extends RouteProps {
@@ -62,7 +65,15 @@ const Routes: React.FC = () => {
         <Switch>
 
             <Route exact path="/" component={login} />
+            <Route exact path="/resetPassword/:userID" component={resetPassword} />
+
+
             <PrivateRoute exact path="/menu" component={menu} />
+
+            {/* Usuários */}
+            <PrivateRoute exact path="/users" component={users} />
+            <PrivateRoute exact path="/newUser" component={newUser} />
+            <PrivateRoute exact path="/newUser/:userID" component={newUser} />
 
             {/* Montagem Externa */}
             <PrivateRoute exact path="/solicitacaoMontagem" component={solicitacaoMontagem} />

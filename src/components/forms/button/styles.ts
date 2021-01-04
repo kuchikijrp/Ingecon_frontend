@@ -11,14 +11,15 @@ export const ContainerButton = styled.div`
     position: relative;
     padding:.5%;
     
-    button{
-        /* width: 100%;
-        height: 100%; */
+    /* button{
+        width: 100%;
+        height: 100%;
         padding: 0 5px;
         border: 1px solid var(--primary);
         color: #ffffff;
         background: var(--primary);
-        /* margin: 10px; */
+        background-image: linear-gradient(to right, var(--primary), 65%, var(--secondary));
+        margin: 10px;
         font-size: 24px;
         border-radius: 5px;
         position: relative;
@@ -28,12 +29,32 @@ export const ContainerButton = styled.div`
 
     }
     button:hover{
-        /* box-shadow: 0 0 0 2.5px rgba(68, 114, 196, 0.56); */
-        -webkit-box-shadow: 0 0 0 2.5px rgba(102,175,233,.6);
-        box-shadow: 0 0 0 2.5px rgba(102,175,233,.6);
-        background-color: var(--secondary);
-        /* color: var(--white) */
-        /* opacity: 5; */
-    }
+    background-position: right center; /* change the direction of the change here */
+    /* color: #fff; */
+    /* text-decoration: none; */
+    //} 
 
+ button {background-image: linear-gradient(to right, #314755 0%, #26a0da  51%, #314755  100%)}
+ button {
+    font-size: 18px;
+    /* margin: 10px; */
+    padding: 5px 15px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    box-shadow: 0 0 20px #eee;
+    border-radius: 10px;
+    display: block;
+    cursor: pointer;
+  }
+
+ button:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
 `; 
+
+

@@ -1,17 +1,24 @@
 import React from 'react';
 
-import SideBar from '../../components/sidebar';
+import SideBar from '../../components/sidebar2/';
+import Navbar from '../../components/navbar/'
 
-import { Grid } from './styles';
+import { NavbarContainer, Menu } from './styles';
+import { Grid } from '../../styles/grid';
 
-const Menu: React.FC = () => {
+const Dash: React.FC = () => {
   return (
     <>
       <Grid>
-        <SideBar></SideBar>
+        <Menu >
+            <SideBar />
+        </Menu>
+        <NavbarContainer>
+            <Navbar />
+        </NavbarContainer>
       </Grid>
     </>
     );
 }
 
-export default Menu;
+export default Dash;

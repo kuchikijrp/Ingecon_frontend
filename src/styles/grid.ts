@@ -3,11 +3,12 @@ import styled from "styled-components";
 export const Grid = styled.div`
         display: grid;
 
-    grid-template-rows: 7vh auto;
-    grid-template-columns: 15vw auto;
+    grid-template-rows: 70px auto;
+    grid-template-columns: 200px auto;
+    /* grid-template-columns: 260px auto; */
 
     grid-template-areas: 
-        'SB CP'
+        'SB NB'
         'SB CP';
     /* grid-template-areas: 
         'NB NB'
