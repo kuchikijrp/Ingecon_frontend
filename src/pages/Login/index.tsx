@@ -21,6 +21,8 @@ const Login: React.FC<RouteComponentProps> = ({history}) => {
     useEffect(()=>{
         function Logout(){
           localStorage.removeItem("user");
+          localStorage.removeItem("rules");
+          localStorage.removeItem("itensMenu");
           sessionStorage.removeItem("token");
         }
     

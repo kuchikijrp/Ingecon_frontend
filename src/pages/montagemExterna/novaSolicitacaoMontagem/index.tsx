@@ -105,6 +105,8 @@ const SolicitacaoMontagem: React.FC  = () => {
     const [terceiros, setTerceiros] = useState('');
     const [outros, setOutros] = useState('');
     const [despesas, setDespesas] = useState('');
+    const [diarias, setDiarias] = useState('');
+    const [impostos, setImpostos] = useState('');
 
     const { idMount="" } = useParams();
     
@@ -157,6 +159,9 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setHospedagem(mount.data?.vl_hospedagem || '')
                 setTerceiros(mount.data?.vl_terceiros|| '')
                 setOutros(mount.data?.vl_outros|| '')
+                setDiarias(mount.data?.vl_diarias|| '')
+                // setImpostos(mount.data?.vl_impostos|| '')
+                setImpostos((parseFloat(mount.data?.budgeted || '') * 0.11).toString())
 
                 if(mount.data?.status !== "Em Analise")
                     setAprovacao(mount.data?.status || null);
@@ -269,12 +274,14 @@ const SolicitacaoMontagem: React.FC  = () => {
         const vHospedagem = hospedagem !== ''? parseFloat(hospedagem) : parseFloat(hospedagem.replace(',', '.')) || 0;
         const vTerceiros = terceiros !== ''? parseFloat(terceiros) : parseFloat(terceiros.replace(',', '.')) || 0;
         const vOutros = outros !== ''? parseFloat(outros) : parseFloat(outros.replace(',', '.')) || 0;
+        const vDiarias = diarias !== ''? parseFloat(diarias) : parseFloat(diarias.replace(',', '.')) || 0;
+        const vImpostos = impostos !== ''? parseFloat(impostos) : parseFloat(impostos.replace(',', '.')) || 0;
         
-        const desp = vAlimentacao + vMaterial + vDeslocamento + vCombustivel + vPassagem + vHospedagem + vTerceiros + vOutros;
+        const desp = vAlimentacao + vMaterial + vDeslocamento + vCombustivel + vPassagem + vHospedagem + vTerceiros + vOutros + vDiarias + vImpostos;
         
         // console.log(vAlimentacao)
         setDespesas(desp.toString())
-    }, [alimentacao, material, deslocamento, combustivel, passagem, hospedagem, terceiros, outros])
+    }, [alimentacao, material, deslocamento, combustivel, passagem, hospedagem, terceiros, outros, diarias, impostos])
 
     async function handle_salvarSolicitacao(event: any){
         // event.preventDefault();
@@ -354,7 +361,9 @@ const SolicitacaoMontagem: React.FC  = () => {
                     hospedagem,
                     terceiros,
                     outros,
-                    despesas
+                    despesas,
+                    diarias,
+                    impostos
 
                 },{
                     headers: {
@@ -645,8 +654,6 @@ const SolicitacaoMontagem: React.FC  = () => {
                                             type={'text'}
                                             disabled={!userRule ? true : false}
                                             />
-                                    </div>
-                                    <div className="formControl">
                                         <Input 
                                             title={"Passagem"}
                                             name={'vlPassagem'}
@@ -655,6 +662,8 @@ const SolicitacaoMontagem: React.FC  = () => {
                                             setData={event => setPassagem(event.target.value)} 
                                             disabled={!userRule ? true : false}
                                             />
+                                    </div>
+                                    <div className="formControl">
                                         <Input 
                                             title={"Hospedagem"}
                                             name={'vlHospedagem'}
@@ -678,6 +687,22 @@ const SolicitacaoMontagem: React.FC  = () => {
                                             value={outros}
                                             setData={event => setOutros(event.target.value)} 
                                             disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Diarias"}
+                                            name={'vlDiarias'}
+                                            type={'text'}
+                                            value={diarias}
+                                            setData={event => setDiarias(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Impostos"}
+                                            name={'vlImpostos'}
+                                            type={'text'}
+                                            value={impostos}
+                                            setData={event => setImpostos(event.target.value)} 
+                                            disabled={true}
                                             />
                                         <Input 
                                             title={"Total Despesas"}
