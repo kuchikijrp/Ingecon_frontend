@@ -36,6 +36,7 @@ type InputsProps={
     horaDescarga: string;
     horaMontagem: string;
     orcamento: string;
+    formPagto: string;
     qtdMontadeores: string;
     obs: string;
     aprovacao: string;
@@ -53,6 +54,7 @@ const schema = yup.object().shape({
     horaDescarga: yup.string().required('Informe a hora do inicio da descarga'),
     horaMontagem: yup.string().required('Informe a hora do inicio do serviço'),
     orcamento: yup.string().required('Informe o valor do orçamento'),
+    formPagto: yup.string().required('Informe a forma de pagamento'),
     qtdMontadores : yup.string().required('Informe a quantidade de montadores'),
     obs: yup.string(),
 });
@@ -85,12 +87,14 @@ const SolicitacaoMontagem: React.FC  = () => {
     const [end_work, setEndWork] = useState('');
     const [qtd_fitters, setQtdFitters] = useState('');
     const [budgeted, setBudgeted] = useState('');
+    const [formPagto, setFormPagto] = useState('');
     const [time_discharge, setTimeDischarge] = useState('');
     const [time_work, setTimeWork] = useState('');
     const [obs, setObs] = useState('');
     const [emailDonoMont, setEmailDonoMont] = useState('');
 
     const [branches, setBranches] = useState([]);
+    const [formPagtData, setFormPagtoData] = useState([]);
 
     const [aprovacao, setAprovacao] = useState('');
     const [obsAprovador, setObsAprovador] = useState('');
@@ -147,6 +151,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setTimeDischarge(mount.data?.time_discharge || null);
                 setTimeWork(mount.data?.time_work || null);
                 setBudgeted(mount.data?.budgeted || null);
+                setFormPagto(mount.data?.form_pagto || null);
                 setQtdFitters(mount.data?.qtd_fitters || null);
                 setObs(mount.data?.obs || null);
                 setEmailDonoMont(mount.data.mountsToUser?.email || null);
@@ -187,7 +192,8 @@ const SolicitacaoMontagem: React.FC  = () => {
             
             
             
-            getFiliais()
+            // getFiliais()
+            // getFormaPagto()
             // console.log(obssAprovador)
 
             // console.log(mount)
@@ -219,7 +225,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                         }))
         
                     }
-                    // console.log(filiais)
+                    // console.log(response)
                 } catch (error) {
                     setLoading(false);
                     toast.error(error);  
@@ -227,12 +233,42 @@ const SolicitacaoMontagem: React.FC  = () => {
             setLoading(false)
 
         }
+        async function getFormaPagto(){
+            const token = sessionStorage.getItem('token');
+            setLoading(true);
+                try {
+                    const response = await api.get('/formasPagamento',
+                    {
+                        headers:{
+                            authorization: `Bearer ${token}`
+                        }
+                    })
 
+                    if (response.data.error){
+                        toast.error(response.data.error)
+                    }else{
+                        setFormPagtoData(response.data.map(pagto => {
+
+                            return {'id':pagto.id, 'name': pagto.nm_desc_condicao_pagto}
+                        }))
+        
+                    }
+                    // console.log(response)
+                } catch (error) {
+                    setLoading(false);
+                    toast.error(error);  
+                }
+            setLoading(false)
+
+        }
+        
+        getFiliais()
+        getFormaPagto()
+        
         if (idMount !== "")
         getMount()
         
-        // if (idMount === "")
-        getFiliais()
+        // if (idMount === "")        
 
       }, [])
 
@@ -247,7 +283,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                 headers: {
                     authorization: `Bearer ${token}`
                 }})
-// console.log(response)
+                // console.log(response)
                 if (response.data.error){
                     toast.error(response.data.error)
                 }else{
@@ -298,7 +334,7 @@ const SolicitacaoMontagem: React.FC  = () => {
         {
             type : type,
             id_at: idAt,
-            client: 1,
+            client: '',
             store: store,
             contact_store: contact_store,
             contact_phone: contact_phone,
@@ -307,6 +343,7 @@ const SolicitacaoMontagem: React.FC  = () => {
             end_work: end_work,
             qtd_fitters: qtd_fitters,
             budgeted: budgeted,
+            form_pagto: formPagto,
             time_discharge: time_discharge,
             time_work: time_work,
             obs: obs,
@@ -565,6 +602,16 @@ const SolicitacaoMontagem: React.FC  = () => {
                                 value={budgeted}
                                 errors={errors.orcamento} 
                                 setData={event => setBudgeted(event.target.value)}
+                                disabled={idMounts ? true : false}
+                            />
+                            <Select 
+                                title={'Forma Pagamento'}
+                                name={'formPagto'}
+                                data = {formPagtData}
+                                register={register}
+                                errors={errors.formPagto}
+                                value={formPagto}
+                                setData={event => setFormPagto(event.target.value)}
                                 disabled={idMounts ? true : false}
                             />
                             {/* <InputMask 

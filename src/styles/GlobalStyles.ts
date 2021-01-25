@@ -9,7 +9,7 @@ export default createGlobalStyle`
         font-family: Segoe UI,Helvetica Neue,Helvetica,Lucida Grande,Arial,Ubuntu,Cantarell,Fira Sans,sans-serif;
         /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; */
 
-        ::-webkit-scrollbar-track
+    ::-webkit-scrollbar-track
     {
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
         background-color: #F5F5F5;
@@ -19,6 +19,7 @@ export default createGlobalStyle`
     ::-webkit-scrollbar
     {
         width: 10px;
+        height: 10%;
         background-color: #F5F5F5;
     }
 
