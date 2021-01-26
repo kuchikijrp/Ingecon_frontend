@@ -39,7 +39,7 @@ const Users: React.FC = () => {
       }
 
       if (users.data.original){
-          // toast.error(users.data.original.message);
+          toast.error(users.data.original.message);
       }
 
       if(users.data){

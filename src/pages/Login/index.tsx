@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
-import {Container, Content, LogoIngecon, WrapperInput, LogoMarelli } from './styles';
+import {Container, Content, LogoIngecon, WrapperInput } from './styles';
 
 import api from '../../services/api';
 
 import Loading from '../../components/Loading';
 
 import logoIngecon from '../../assets/logo_Ingecon.svg';
-import logoMarelli from '../../assets/logo_marelli.svg';
-
 
 const Login: React.FC<RouteComponentProps> = ({history}) => {
     const [loading, setLoading] = useState(false);
@@ -44,7 +42,7 @@ const Login: React.FC<RouteComponentProps> = ({history}) => {
             setLoading(false);
         } else {
             // console.log(response.data)
-            if(response.data?.user?.reset_pass == 1){
+            if(response.data?.user?.reset_pass === 1){
                     // toast.info('Senha temporária, necessario mudar');
                     alert('Senha temporária, necessario mudar');
                     history.push(`/resetPassword/${response.data.user.id}`);
@@ -109,7 +107,6 @@ const Login: React.FC<RouteComponentProps> = ({history}) => {
 
                     <button onClick={handleSubmit}>Logar</button>
                 </form>
-                <LogoMarelli src={logoMarelli} />
             </Content>
         </Container>
     

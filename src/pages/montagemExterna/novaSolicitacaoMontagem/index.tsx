@@ -122,8 +122,11 @@ const SolicitacaoMontagem: React.FC  = () => {
 
         const rules = JSON.parse(localStorage.getItem('rules') || '');
         rules.map(rule => {
-            if(rule.name === 'montagemExterna_ADM' || rule.name === 'ROLE_SUPER')
+            if(rule.name === 'montagemExterna_ADM' || rule.name === 'ROLE_SUPER'){
                 return setUserRule(rule.name);
+            }
+
+            return setUserRule(false);
         })
         // console.log(userRule)
         setLoading(true);
@@ -166,7 +169,9 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setOutros(mount.data?.vl_outros|| '')
                 setDiarias(mount.data?.vl_diarias|| '')
                 // setImpostos(mount.data?.vl_impostos|| '')
-                setImpostos((parseFloat(mount.data?.budgeted || '') * 0.11).toString())
+                console.log(mount.data?.budgeted)
+                setImpostos(mount.data?.budgeted === 0 ? '0' : (parseFloat(mount.data?.budgeted || '') * 0.11).toString())
+                // setImpostos(mount.data?.budgeted === 'null' ? '0' : (parseFloat(mount.data?.budgeted || '') * 0.11).toString())
 
                 if(mount.data?.status !== "Em Analise")
                     setAprovacao(mount.data?.status || null);

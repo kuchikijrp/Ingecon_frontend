@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,  } from 'react';
 import {RouteComponentProps, useParams} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -41,7 +41,7 @@ const Login: React.FC<RouteComponentProps> = ({history}) => {
         })
 
         setLoading(false);
-        if(resetPass.status = 200){
+        if(resetPass.status === 200){
             toast.success('Senha alterada com sucesso.');
             history.push('/');
         }

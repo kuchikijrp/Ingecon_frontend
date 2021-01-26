@@ -4,7 +4,7 @@ import { Container, LogoIngecon, Menu } from './styles';
 
 // import { RiDashboardLine, RiHammerLine, RiEqualizerLine } from 'react-icons/ri'
 
-import api from '../../services/api';
+// import api from '../../services/api';
 // import { NavLink } from 'react-router-dom';
 
 import logoIngecon from '../../assets/logo_Ingecon.svg';
@@ -19,7 +19,7 @@ const SibeBar: React.FC = () => {
 
   useEffect(()=>{
     async function montarMenu(){
-        const token = sessionStorage.getItem('token');
+        // const token = sessionStorage.getItem('token');
         // console.log(localStorage.getItem('itensMenu'))
         const data = JSON.parse(localStorage.getItem('itensMenu') || '');
         
