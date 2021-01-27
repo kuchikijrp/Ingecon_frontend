@@ -149,8 +149,8 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setStore(mount.data?.store || null);
                 setContact_store(mount.data?.contact_store || null);
                 setContact_Phone(mount.data?.contact_phone || null);
-                setStartWork(mount.data?.start_work || null);
-                setEndWork(mount.data?.end_work || null);
+                setStartWork(new Date(mount.data?.start_work || null).toISOString().split('T')[0]);
+                setEndWork(new Date(mount.data?.end_work || null).toISOString().split('T')[0]);
                 setTimeDischarge(mount.data?.time_discharge || null);
                 setTimeWork(mount.data?.time_work || null);
                 setBudgeted(mount.data?.budgeted || null);
@@ -169,7 +169,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setOutros(mount.data?.vl_outros|| '')
                 setDiarias(mount.data?.vl_diarias|| '')
                 // setImpostos(mount.data?.vl_impostos|| '')
-                console.log(mount.data?.budgeted)
+                // console.log(new Date(mount.data?.start_work).toISOString().split('T')[0])
                 setImpostos(mount.data?.budgeted === 0 ? '0' : (parseFloat(mount.data?.budgeted || '') * 0.11).toString())
                 // setImpostos(mount.data?.budgeted === 'null' ? '0' : (parseFloat(mount.data?.budgeted || '') * 0.11).toString())
 
@@ -358,7 +358,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                 authorization: `Bearer ${token}`
             }
         });
-        // console.log(response)
+        console.log(response)
             if (response.data.original){
                 toast.error(response.data.original.message);
             }

@@ -28,7 +28,7 @@ export const Content = styled.div`
     margin: 50px auto 0;
     max-width: 350px;
     width: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.6);
     border-radius: 10px;
     padding: 20px;
 

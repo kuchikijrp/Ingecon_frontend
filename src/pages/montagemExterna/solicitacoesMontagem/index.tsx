@@ -90,6 +90,7 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
             <Button name={<NavLink  to='/solicitacaoMontagem' style={{color: '#fff', textDecoration: 'none'}}>Nova Solicitação</NavLink >} />
                 <Content>
                     {/* <Table data={solicitacoes} /> */}
+                    {/* {console.log(solicitacoes)} */}
                     <ReactTable
                         data={solicitacoes}
                         // TheadComponent={_ => null}
@@ -134,7 +135,7 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                     accessor: "createdAt",
                                     Cell: row => (
                                         <span>{
-                                            new Date(row.value).toLocaleDateString('en-GB', {timeZone : 'UTC'}) 
+                                            new Date(row.value).toLocaleDateString('pt-br', {timeZone : 'UTC'}) 
                                         }</span>
                                     )
                                 },
@@ -143,7 +144,7 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                     accessor: "start_work",
                                     Cell: row => (
                                         <span>{
-                                            new Date(row.value).toLocaleDateString('en-GB', {timeZone : 'UTC'}) 
+                                            new Date(row.value).toLocaleDateString('pt-br', {timeZone : 'UTC'}) 
                                         }</span>
                                     )
                                 },
@@ -152,7 +153,7 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                     accessor: "end_work",
                                     Cell: row => (
                                         <span>{
-                                            new Date(row.value).toLocaleDateString('en-GB', {timeZone : 'UTC'}) 
+                                            new Date(row.value).toLocaleDateString('pt-br', {timeZone : 'UTC'}) 
                                         }</span>
                                     )
                                 },
