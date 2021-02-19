@@ -13,14 +13,13 @@ const Navbar: React.FC = () => {
         setUser(userLoged.usuario);
 
         var img = new Image();
-        img.src = `avatares/${userLoged.usuario}.jpg`;
+        img.src = `/avatares/${userLoged.usuario}.jpg`;
         img.onload = function() {
-            setAvatar(`avatares/${userLoged.usuario}.jpg`)
+            setAvatar(`/avatares/${userLoged.usuario}.jpg`)
         }
         img.onerror = function() {
-            setAvatar('avatares/default.jpg')
+            setAvatar('/avatares/default.jpg')
         }
-        console.log(avatar);
     }, [])
 
   return (

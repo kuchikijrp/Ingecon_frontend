@@ -16,6 +16,11 @@ export const Container = styled.div`
     align-items: 'center';
 
     flex:1;
+
+    @media print{
+        border-bottom: 2px outset #000;
+        border-radius: 0
+    }
 `;
 
 // export const Container = styled.div`

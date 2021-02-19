@@ -95,7 +95,8 @@ export const Menu = styled.nav`
                 display: flex;
                 align-items: center;
                 white-space: nowrap;
-                text-decoration: none;
+                text-decoration: none;  
+                padding: 5px 10px;
             }
             
         }    
@@ -130,7 +131,7 @@ export const Menu = styled.nav`
             text-transform: initial;
             display: block;
             color: inherit;
-            padding: .75em 10px;
+            padding: 5px 10px;
             }
         }
         }

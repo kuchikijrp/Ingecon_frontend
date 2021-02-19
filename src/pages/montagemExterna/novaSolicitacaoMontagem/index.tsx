@@ -80,6 +80,8 @@ const SolicitacaoMontagem: React.FC  = () => {
     const [address, setAddress] = useState('');
     const [neighborhood, setNeighborhood] = useState('');
     const [uf, setUf] = useState('');
+    const [cidade, setCidade] = useState('');
+    const [cep, setCEP] = useState('');
     const [contact_store, setContact_store] = useState('');
     const [contact_phone, setContact_Phone] = useState('');
     const [type_work, setTypeWork] = useState('');
@@ -111,6 +113,7 @@ const SolicitacaoMontagem: React.FC  = () => {
     const [despesas, setDespesas] = useState('');
     const [diarias, setDiarias] = useState('');
     const [impostos, setImpostos] = useState('');
+    const [txADMEquipe, setTxADMEquipe] = useState('');
 
     const { idMount="" } = useParams();
     
@@ -168,9 +171,9 @@ const SolicitacaoMontagem: React.FC  = () => {
                 setTerceiros(mount.data?.vl_terceiros|| '')
                 setOutros(mount.data?.vl_outros|| '')
                 setDiarias(mount.data?.vl_diarias|| '')
-                // setImpostos(mount.data?.vl_impostos|| '')
+                setImpostos(mount.data?.vl_impostos|| '')
                 // console.log(new Date(mount.data?.start_work).toISOString().split('T')[0])
-                setImpostos(mount.data?.budgeted === 0 ? '0' : (parseFloat(mount.data?.budgeted || '') * 0.11).toString())
+                // setImpostos(mount.data?.budgeted === 0 ? '0' : (parseFloat(mount.data?.budgeted || '') * 0.11).toString())
                 // setImpostos(mount.data?.budgeted === 'null' ? '0' : (parseFloat(mount.data?.budgeted || '') * 0.11).toString())
 
                 if(mount.data?.status !== "Em Analise")
@@ -188,7 +191,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                     toast.error(approvals.data.error)
                 }else{
                     setObssAprovador(approvals.data.map(approval =>{
-                        return (`**${new Date(approval.createdAt).toLocaleDateString('en-GB', {timeZone : 'UTC'}) } - ${new Date(approval.createdAt).toLocaleTimeString('en-GB', {timeZone : 'UTC'}) } : ${approval.user_name} - ${approval.status}${approval.obs? ' : ' + approval.obs : ''}**`)
+                        return (`**${new Date(approval.createdAt).toLocaleDateString('en-GB') } - ${new Date(approval.createdAt).toLocaleTimeString('en-GB') } : ${approval.user_name} - ${approval.status}${approval.obs? ' : ' + approval.obs : ''}**`)
                     }))
 
                 }
@@ -294,7 +297,9 @@ const SolicitacaoMontagem: React.FC  = () => {
                 }else{
                     setAddress(response.data?.nm_endereco || null);
                     setNeighborhood(response.data?.nm_bairro || null);
-                    setUf(response.data?.nm_uf || null)
+                    setUf(response.data?.nm_uf || null);
+                    setCidade(response.data?.nm_cidade || null);
+                    setCEP(response.data?.nr_cep || null)
                 }
 
                 
@@ -316,12 +321,19 @@ const SolicitacaoMontagem: React.FC  = () => {
         const vTerceiros = terceiros !== ''? parseFloat(terceiros) : parseFloat(terceiros.replace(',', '.')) || 0;
         const vOutros = outros !== ''? parseFloat(outros) : parseFloat(outros.replace(',', '.')) || 0;
         const vDiarias = diarias !== ''? parseFloat(diarias) : parseFloat(diarias.replace(',', '.')) || 0;
-        const vImpostos = impostos !== ''? parseFloat(impostos) : parseFloat(impostos.replace(',', '.')) || 0;
+        // const vImpostos = impostos !== ''? parseFloat(impostos) : parseFloat(impostos.replace(',', '.')) || 0;
         
-        const desp = vAlimentacao + vMaterial + vDeslocamento + vCombustivel + vPassagem + vHospedagem + vTerceiros + vOutros + vDiarias + vImpostos;
+        const desp = vAlimentacao + vMaterial + vDeslocamento + vCombustivel + vPassagem + vHospedagem + vTerceiros + vOutros + vDiarias;
+
+        const txAdmEquipe = (desp * 0.1) + (desp + (desp * 0.1)) * 0.4
+
+        const vImposto = (desp + txAdmEquipe) * 0.11
         
         // console.log(vAlimentacao)
-        setDespesas(desp.toString())
+        setTxADMEquipe(txAdmEquipe.toFixed(2).toString())
+        setImpostos(vImposto.toFixed(2).toString())
+
+        setDespesas((desp + txAdmEquipe + vImposto).toFixed(2).toString())
     }, [alimentacao, material, deslocamento, combustivel, passagem, hospedagem, terceiros, outros, diarias, impostos])
 
     async function handle_salvarSolicitacao(event: any){
@@ -444,7 +456,7 @@ const SolicitacaoMontagem: React.FC  = () => {
             </NavbarContainer>
 
             <Wrapper>
-            <PagerHeader  header={'Solicitação Montagem'} />
+            <PagerHeader  header={`Solicitação Montagem ${idMount? ' - ' + idMount : ''}`} />
 
                 {/* <InputMask placeholder="hola" setData={event => setBudgeted(event.target.value)} />    */}
 
@@ -514,6 +526,24 @@ const SolicitacaoMontagem: React.FC  = () => {
                                 register={register}
                                 errors={errors.bairro}                                
                                 value={neighborhood}   
+                                disabled={true}
+                            />
+                            <Input 
+                                title={'Cidade'}
+                                name={'cidade'}
+                                type={'text'}
+                                value={cidade}   
+                                register={register}
+                                errors={errors.uf}
+                                disabled={true}
+                            />
+                            <Input 
+                                title={'CEP'}
+                                name={'cidade'}
+                                type={'text'}
+                                value={cep}   
+                                register={register}
+                                errors={errors.uf}
                                 disabled={true}
                             />
                             <Input 
@@ -662,7 +692,7 @@ const SolicitacaoMontagem: React.FC  = () => {
                                             <Select 
                                                 name={'aprovacao'} 
                                                 title={'Status'}
-                                                data={[{id: 1, name: 'Aprovado'},{id: 2, name: 'Reprovado'},{id: 3, name: 'Serviço Iniciado'},{id: 4, name: 'Serviço Finalizado'}]} 
+                                                data={[{id: 1, name: 'Pendente'},{id: 2, name: 'Aprovado'},{id: 3, name: 'Reprovado'},{id: 4, name: 'Serviço Iniciado'},{id: 5, name: 'Serviço Finalizado'}]} 
                                                 register={register} 
                                                 errors={errors.aprovacao} 
                                                 value={aprovacao}
@@ -675,6 +705,31 @@ const SolicitacaoMontagem: React.FC  = () => {
                                     <div className="separator"></div>
                                     <div className="formControl">
                                         <Input 
+                                            title={"Diarias"}
+                                            name={'vlDiarias'}
+                                            type={'number'}
+                                            value={diarias}
+                                            setData={event => setDiarias(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                        />   
+                                        <Input 
+                                            title={"Hospedagem"}
+                                            name={'vlHospedagem'}
+                                            type={'number'}
+                                            value={hospedagem}
+                                            setData={event => setHospedagem(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+                                        <Input 
+                                            title={"Deslocamento"}
+                                            name={'vlDeslocamento'}
+                                            type={'number'}
+                                            value={deslocamento}
+                                            setData={event => setDeslocamento(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />
+
+                                        <Input 
                                             title={"Alimentação"}
                                             name={'vlAlimentacao'}
                                             type={'number'}
@@ -682,6 +737,25 @@ const SolicitacaoMontagem: React.FC  = () => {
                                             setData={event => setAlimentacao(event.target.value)} 
                                             disabled={!userRule ? true : false}
                                             />
+                                        <Input 
+                                            title={"Terceiros"}
+                                            name={'vlTerceiros'}
+                                            type={'number'}
+                                            value={terceiros}
+                                            setData={event => setTerceiros(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />  
+                                        <Input 
+                                            title={"Passagem"}
+                                            name={'vlPassagem'}
+                                            type={'number'}
+                                            value={passagem}
+                                            setData={event => setPassagem(event.target.value)} 
+                                            disabled={!userRule ? true : false}
+                                            />                                          
+
+                                    </div>
+                                    <div className="formControl">                                     
                                         <Input 
                                             title={"Material"}
                                             name={'vlMaterial'}
@@ -691,67 +765,34 @@ const SolicitacaoMontagem: React.FC  = () => {
                                             disabled={!userRule ? true : false}
                                             />
                                         <Input 
-                                            title={"Deslocamento"}
-                                            name={'vlDeslocamento'}
-                                            type={'text'}
-                                            value={deslocamento}
-                                            setData={event => setDeslocamento(event.target.value)} 
-                                            disabled={!userRule ? true : false}
-                                            />
-                                        <Input 
                                             title={"Combustivel"}
                                             name={'vlCombustivel'}
                                             value={combustivel}
                                             setData={event => setCombustivel(event.target.value)} 
-                                            type={'text'}
-                                            disabled={!userRule ? true : false}
-                                            />
-                                        <Input 
-                                            title={"Passagem"}
-                                            name={'vlPassagem'}
-                                            type={'text'}
-                                            value={passagem}
-                                            setData={event => setPassagem(event.target.value)} 
-                                            disabled={!userRule ? true : false}
-                                            />
-                                    </div>
-                                    <div className="formControl">
-                                        <Input 
-                                            title={"Hospedagem"}
-                                            name={'vlHospedagem'}
-                                            type={'text'}
-                                            value={hospedagem}
-                                            setData={event => setHospedagem(event.target.value)} 
-                                            disabled={!userRule ? true : false}
-                                            />
-                                        <Input 
-                                            title={"Terceiros"}
-                                            name={'vlTerceiros'}
-                                            type={'text'}
-                                            value={terceiros}
-                                            setData={event => setTerceiros(event.target.value)} 
+                                            type={'number'}
                                             disabled={!userRule ? true : false}
                                             />
                                         <Input 
                                             title={"Outros"}
                                             name={'vlOutros'}
-                                            type={'text'}
+                                            type={'number'}
                                             value={outros}
                                             setData={event => setOutros(event.target.value)} 
                                             disabled={!userRule ? true : false}
                                             />
+
                                         <Input 
-                                            title={"Diarias"}
-                                            name={'vlDiarias'}
-                                            type={'text'}
-                                            value={diarias}
-                                            setData={event => setDiarias(event.target.value)} 
-                                            disabled={!userRule ? true : false}
+                                            title={"Taxa ADM/Equipe"}
+                                            name={'vlImpostos'}
+                                            type={'number'}
+                                            value={txADMEquipe}
+                                            setData={event => setImpostos(event.target.value)} 
+                                            disabled={true}
                                             />
                                         <Input 
                                             title={"Impostos"}
                                             name={'vlImpostos'}
-                                            type={'text'}
+                                            type={'number'}
                                             value={impostos}
                                             setData={event => setImpostos(event.target.value)} 
                                             disabled={true}
@@ -759,15 +800,16 @@ const SolicitacaoMontagem: React.FC  = () => {
                                         <Input 
                                             title={"Total Despesas"}
                                             name={'tDespesas'}
-                                            type={'text'}
+                                            type={'number'}
                                             value={despesas}
                                             // setData={event => setAprovacao(event.target.value)} 
                                             disabled={true}
                                             />
                                     </div>
+                                        </>}
                                     <div className="formControl">
                                         <TextArea 
-                                        title={"OBS. Aprovador"} 
+                                        title={"OBS."} 
                                         name={"obsAprovador"} 
                                         rows={2} 
                                         cols={50} 
@@ -775,11 +817,9 @@ const SolicitacaoMontagem: React.FC  = () => {
                                         value={obsAprovador}
                                         errors={errors.obs} 
                                         setData={event => setObsAprovador(event.target.value)}
-                                        disabled={!userRule ? true : false}
                                         /> 
                                     </div>
-                                                                         <Button onClicks={handle_editSolicitacao} name={'Salvar'} /> 
-                                    </>}
+                                     <Button onClicks={handle_editSolicitacao} name={'Salvar'} /> 
                                     </>
                                     // :
                                     // ''

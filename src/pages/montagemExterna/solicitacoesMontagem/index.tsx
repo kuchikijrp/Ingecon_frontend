@@ -188,28 +188,33 @@ const SolicitacoesMontagem: React.FC<RouteComponentProps> = ({history}) => {
                                             borderRadius: '5px',   
                                             marginRight: '5%',
                                             background: 
+                                                row.value === 'Pendente'  ? '#99582A' : 
                                                 row.value === 'Em Analise'  ? '#999' : 
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
                                                 row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 '',
-                                            boxShadow:  `0 0 5px ${row.value === 'Em Analise'  ? '#999' : 
+                                            boxShadow:  `0 0 5px ${row.value === 'Em Analise'  ? '#999' :
+                                                row.value === 'Pendente'  ? '#99582A' : 
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
                                                 row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 ''}, 0 0 10px ${row.value === 'Em Analise'  ? '#999' : 
+                                                row.value === 'Pendente'  ? '#99582A' :
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
                                                 row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 ''}, 0 0 20px  ${row.value === 'Em Analise'  ? '#999' : 
+                                                row.value === 'Pendente'  ? '#99582A' :
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :
                                                 row.value === 'Serviço Finalizado' ? '#29bf12' :
                                                 ''}, 0 0 40px ${row.value === 'Em Analise'  ? '#999' : 
+                                                row.value === 'Pendente'  ? '#99582A' :
                                                 row.value === 'Reprovado'   ? '#D63230' : 
                                                 row.value === 'Aprovado'    ? '#40BCD8' :
                                                 row.value === 'Serviço Iniciado' ? '#F28C37' :

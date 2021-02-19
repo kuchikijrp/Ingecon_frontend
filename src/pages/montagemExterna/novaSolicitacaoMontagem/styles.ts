@@ -2,16 +2,30 @@ import styled from "styled-components";
 
 export const Menu = styled.div`
     grid-area: SB;
+
+    @media print{
+        display:none;
+    }
 `;
 
 export const NavbarContainer = styled.div`
     grid-area: NB;
+
+    @media print{
+        display:none;
+    }
 `;
 
 export const Wrapper = styled.div`
     grid-area: CP;
     padding: 1%;
     overflow: hidden;
+
+    @media print{
+        margin-left: -200px;
+        height: 890px;
+        font-size: 12px;
+    }
 `;
 
 export const Content = styled.div`

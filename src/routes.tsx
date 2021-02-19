@@ -79,7 +79,7 @@ const Routes: React.FC = () => {
             <PrivateRoute exact path="/solicitacaoMontagem" component={solicitacaoMontagem} />
             <PrivateRoute exact path="/solicitacoesMontagem" component={solicitacoesMontagem} />
             <PrivateRoute exact path="/solicitacaoMontagem/:idMount" component={solicitacaoMontagem} />
-
+            
         </Switch>
     </BrowserRouter>
     );

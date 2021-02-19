@@ -60,7 +60,6 @@ const Login: React.FC<RouteComponentProps> = ({history}) => {
                     });
 
                     if(menu?.data){
-                        console.log(menu.data)
                         localStorage.setItem("itensMenu", JSON.stringify(menu.data))
                     }
 
