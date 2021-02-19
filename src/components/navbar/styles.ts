@@ -32,11 +32,11 @@ export const Container = styled.div`
         }
         img {
             height: 51px;
-            width: 48px;
+            width: 51px;
             clip-path: circle(50% at 50% 50%);
             margin-left: 10px;
             min-height: 51px;
-            min-width: 48px;
+            min-width: 51px;
             align-items: flex-end;
         }
         .name {
