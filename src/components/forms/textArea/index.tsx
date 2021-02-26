@@ -16,13 +16,13 @@ type RefReturn =
 export interface TextAreaProps {
     name: string;
     title?: string;
-    register: RefReturn;
-    errors: FieldError | undefined;
+    register?: RefReturn;
+    errors?: FieldError | undefined;
     disabled?: boolean;
     value?: string;
     rows?: number;
     cols?: number;
-    setData: any;
+    setData?: any;
 }
 
 const Input : React.FC<TextAreaProps> = ({
@@ -34,12 +34,12 @@ const Input : React.FC<TextAreaProps> = ({
             <Container>
                 <HeaderTextArea>
                     <Title>{title}:</Title>
-                    <Error>{errors?.message}</Error>
                 </HeaderTextArea>
                 <ContainerTextArea>
                     <textarea disabled={disabled} value={value ?  value : ''} name={name} rows={rows} cols={cols} onChange={setData}/>
                     {errors && <FiAlertCircle size={20} />}
                 </ContainerTextArea>
+                    <Error>{errors?.message}</Error>
             </Container>
         </>
     )

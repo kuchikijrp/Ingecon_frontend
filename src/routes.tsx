@@ -15,6 +15,10 @@ import newUser from './pages/users/newUser'
 import solicitacaoMontagem from './pages/montagemExterna/novaSolicitacaoMontagem/index';
 import solicitacoesMontagem from './pages/montagemExterna/solicitacoesMontagem';
 
+// Manutenção Interna
+import Manutencoes from './pages/manutencaoInterna/solicitacoes';
+import NovaManutencao from './pages/manutencaoInterna/novaSolicitacao'
+
 
 interface PrivateRouteProps extends RouteProps {
     // tslint:disable-next-line:no-any
@@ -71,14 +75,19 @@ const Routes: React.FC = () => {
             <PrivateRoute exact path="/menu" component={menu} />
 
             {/* Usuários */}
-            <PrivateRoute exact path="/users" component={users} />
-            <PrivateRoute exact path="/newUser" component={newUser} />
-            <PrivateRoute exact path="/newUser/:userID" component={newUser} />
+                <PrivateRoute exact path="/users" component={users} />
+                <PrivateRoute exact path="/newUser" component={newUser} />
+                <PrivateRoute exact path="/newUser/:userID" component={newUser} />
 
             {/* Montagem Externa */}
-            <PrivateRoute exact path="/solicitacaoMontagem" component={solicitacaoMontagem} />
-            <PrivateRoute exact path="/solicitacoesMontagem" component={solicitacoesMontagem} />
-            <PrivateRoute exact path="/solicitacaoMontagem/:idMount" component={solicitacaoMontagem} />
+                <PrivateRoute exact path="/solicitacaoMontagem" component={solicitacaoMontagem} />
+                <PrivateRoute exact path="/solicitacoesMontagem" component={solicitacoesMontagem} />
+                <PrivateRoute exact path="/solicitacaoMontagem/:idMount" component={solicitacaoMontagem} />
+
+            {/* Manutenção Interna */}
+                <PrivateRoute exact path="/manutencaoInterna" component={Manutencoes}/>
+                <PrivateRoute exact path="/manutencaoInterna/new" component={NovaManutencao}/>
+                <PrivateRoute exact path="/manutencaoInterna/:id" component={NovaManutencao}/>
             
         </Switch>
     </BrowserRouter>

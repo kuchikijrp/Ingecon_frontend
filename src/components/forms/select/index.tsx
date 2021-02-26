@@ -37,7 +37,6 @@ const Select : React.FC<SelectProps> = ({
             <Container>
                 <Headerselect>
                     {title && <Title>{title}:</Title>}
-                    <Error>{errors?.message}</Error>
                 </Headerselect>
                 <ContainerSelect>
                     <select disabled={disabled} value={value} name={name} ref={register} onChange={setData}>
@@ -49,6 +48,7 @@ const Select : React.FC<SelectProps> = ({
                     </select>
                     {errors && <FiAlertCircle size={20} />}
                 </ContainerSelect>
+                    <Error>{errors?.message}</Error>
             </Container>
         </>
     )

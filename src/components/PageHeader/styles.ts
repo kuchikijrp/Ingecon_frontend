@@ -17,6 +17,25 @@ export const Container = styled.div`
 
     flex:1;
 
+    /* display: 'flex'; */
+    /* flex-direction: 'row'; */
+
+    h2{
+        width: 50%;
+    }
+
+    img{
+        height: 45px;
+        float: right;
+        margin-top: -40px;
+        display: none;
+
+        @media print{
+            display: block;
+            filter: invert(1);
+        }
+    }
+
     @media print{
         border-bottom: 2px outset #000;
         border-radius: 0

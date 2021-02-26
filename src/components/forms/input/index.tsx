@@ -35,13 +35,13 @@ const Input : React.FC<InputProps> = ({
             <Container>
                 <Headerinput>
                     <Title>{title}:</Title>
-                    <Error>{errors?.message}</Error>
                 </Headerinput>
                 <ContainerInput>
                     {/* <input name={name} type={type} ref={register} placeholder={placeholder} onChange={setData} disabled={disabled} step="any"/> */}
                     <input name={name} type={type} ref={register} placeholder={placeholder} onChange={setData} disabled={disabled} autoFocus={focus} value={value ? value : ''} step="any"/>
                     {errors && <FiAlertCircle size={20} />}
                 </ContainerInput>
+                <Error>{errors?.message}</Error>
             </Container>
         </>
     )
