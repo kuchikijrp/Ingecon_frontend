@@ -33,8 +33,6 @@ const SolicitacoesManutencao: React.FC<RouteComponentProps> = ({history}) => {
                 }
             });
 
-            // console.log(requestsMounts.data);
-
             if (response.data.error){
                 toast.error(response.data.error);
                 history.push('/');
@@ -44,10 +42,10 @@ const SolicitacoesManutencao: React.FC<RouteComponentProps> = ({history}) => {
                 toast.error(response.data.original.message);
             }
 
-            if(response.data){
-                setManutencoes(response?.data);
-            }else{
+            if(response?.data?.Erro){
                 setManutencoes([]);
+            }else{
+                setManutencoes(response?.data);
             }
         setLoading(false);
         }
@@ -103,6 +101,7 @@ const SolicitacoesManutencao: React.FC<RouteComponentProps> = ({history}) => {
                                     {
                                         Header: "ID",
                                         accessor: "id",
+                                        maxWidth: 50,
                                         Cell: row => (
                                             <NavLink to={`/manutencaoInterna/${row.value}`}>{row.value}</NavLink>
                                         )
@@ -170,6 +169,10 @@ const SolicitacoesManutencao: React.FC<RouteComponentProps> = ({history}) => {
                                             :
                                                 'Não Atribuido'
                                         )
+                                    },
+                                    {
+                                        Header: "TIPO ATENDIMENTO",
+                                        accessor: "tipo_atendimento"
                                     },
                                     {
                                         Header: "INÍCIO",
