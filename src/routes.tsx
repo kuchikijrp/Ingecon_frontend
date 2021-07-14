@@ -16,6 +16,10 @@ import solicitacaoMontagem from './pages/montagemExterna/novaSolicitacaoMontagem
 import solicitacoesMontagem from './pages/montagemExterna/solicitacoesMontagem';
 
 
+//slider
+
+import slider from './pages/slider'
+
 interface PrivateRouteProps extends RouteProps {
     // tslint:disable-next-line:no-any
     component: any;
@@ -66,6 +70,8 @@ const Routes: React.FC = () => {
 
             <Route exact path="/" component={login} />
             <Route exact path="/resetPassword/:userID" component={resetPassword} />
+
+            <Route exact path="/fotos" component={slider}/>
 
 
             <PrivateRoute exact path="/menu" component={menu} />
